@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
@@ -45,7 +44,7 @@ module.exports = (env) => {
       hot: true,
       port: 3000,
     },
-    devtool: env === 'development' ? 'source-map' : false,
+    devtool: env.NODE_ENV === 'development' ? 'source-map' : false,
     plugins: [
       new webpack.ProgressPlugin(),
       new CleanWebpackPlugin(),
