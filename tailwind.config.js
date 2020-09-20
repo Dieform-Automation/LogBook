@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 module.exports = {
   future: {
     removeDeprecatedGapUtilities: true,
@@ -6,7 +5,11 @@ module.exports = {
   },
   purge: ['./src/**/*.js'],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        '2xl': '1440px',
+      },
+    },
   },
   variants: {},
   plugins: [],

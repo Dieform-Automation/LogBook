@@ -1,0 +1,1 @@
+export default 'svgr-url';
