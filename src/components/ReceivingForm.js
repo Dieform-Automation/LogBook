@@ -10,12 +10,7 @@ const ReceivingForm = () => {
           <label className="form-label" htmlFor="date">
             Date
           </label>
-          <input
-            className="shadow appearance-none border rounded w-full px-3 py-2 text-gray-700 border-gray-400 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline"
-            type="date"
-            name="date"
-            id="date"
-          />
+          <input className="form-input" type="date" name="date" id="date" />
         </div>
         {/* Customer Select */}
         <div className="mb-4">
@@ -49,7 +44,7 @@ const ReceivingForm = () => {
             Customer Packing Slip
           </label>
           <input
-            className="shadow appearance-none border rounded w-full px-3 py-2 text-gray-700 border-gray-400 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline"
+            className="form-input"
             type="text"
             name="customer-packing-slip"
             id="customer-packing-slip"
@@ -63,7 +58,7 @@ const ReceivingForm = () => {
               Part Number
             </label>
             <input
-              className="shadow appearance-none border rounded w-full px-3 py-2 text-gray-700 border-gray-400 hover:border-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="form-input"
               name="part-number"
               id="part-number"
               type="text"
@@ -75,7 +70,7 @@ const ReceivingForm = () => {
               Quantity
             </label>
             <input
-              className="shadow appearance-none border rounded w-full px-3 py-2 text-gray-700 border-gray-400 hover:border-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="form-input"
               name="quantity"
               id="quantity"
               type="number"
@@ -87,7 +82,7 @@ const ReceivingForm = () => {
               Number of Bins
             </label>
             <input
-              className="shadow appearance-none border rounded w-full px-3 py-2 text-gray-700 border-gray-400 hover:border-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              className="form-input"
               name="bins"
               id="bins"
               type="number"
