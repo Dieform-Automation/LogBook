@@ -4,7 +4,7 @@ import TrashIcon from '../assets/trash.svg';
 const ReceivingForm = () => {
   return (
     <div className="w-full max-w-5xl">
-      <form className="bg-white shadow-md rounded px-8 py-6">
+      <form className="shadow-md rounded px-8 py-6">
         {/* Date */}
         <div className="mb-4">
           <label className="form-label" htmlFor="date">
@@ -91,7 +91,7 @@ const ReceivingForm = () => {
           </div>
           <div className="w-full md:w-auto px-3">
             <button
-              className="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full max-w-screen-md whitespace-no-wrap"
+              className="btn btn-blue uppercase font-bold w-full max-w-screen-md whitespace-no-wrap"
               type="button"
             >
               Add Part
@@ -130,7 +130,7 @@ const ReceivingForm = () => {
         {/* Submit Button */}
         <div className="flex justify-center">
           <button
-            className="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded w-full max-w-screen-md"
+            className="btn btn-blue uppercase font-bold w-full max-w-screen-md"
             type="submit"
           >
             Submit
