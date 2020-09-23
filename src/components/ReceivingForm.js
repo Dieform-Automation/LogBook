@@ -7,7 +7,7 @@ const ReceivingForm = () => {
       <form className="bg-white shadow-md rounded px-8 py-6">
         {/* Date */}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
+          <label className="form-label" htmlFor="date">
             Date
           </label>
           <input
@@ -19,10 +19,7 @@ const ReceivingForm = () => {
         </div>
         {/* Customer Select */}
         <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="customer"
-          >
+          <label className="form-label" htmlFor="customer">
             Customer
           </label>
           <div className="relative w-full">
@@ -48,10 +45,7 @@ const ReceivingForm = () => {
         </div>
         {/* Customer Packing Slip */}
         <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="customer-packing-slip"
-          >
+          <label className="form-label" htmlFor="customer-packing-slip">
             Customer Packing Slip
           </label>
           <input
@@ -65,10 +59,7 @@ const ReceivingForm = () => {
         {/* Inline Fields & Button*/}
         <div className="flex flex-wrap -mx-3 mb-4 items-end">
           <div className="w-full md:flex-1 px-3 mb-4 md:mb-0">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="part-number"
-            >
+            <label className="form-label" htmlFor="part-number">
               Part Number
             </label>
             <input
@@ -80,10 +71,7 @@ const ReceivingForm = () => {
             />
           </div>
           <div className="w-full md:flex-1 px-3 mb-4 md:mb-0">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="quantity"
-            >
+            <label className="form-label" htmlFor="quantity">
               Quantity
             </label>
             <input
@@ -95,7 +83,7 @@ const ReceivingForm = () => {
             />
           </div>
           <div className="w-full md:flex-1 px-3 mb-4 md:mb-0">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="bins">
+            <label className="form-label" htmlFor="bins">
               Number of Bins
             </label>
             <input
