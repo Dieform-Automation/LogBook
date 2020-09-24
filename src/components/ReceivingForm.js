@@ -1,7 +1,14 @@
 import React from 'react';
+import useField from '../hooks/useField';
 import TrashIcon from '../assets/trash.svg';
 
 const ReceivingForm = () => {
+  const date = useField('date');
+  const customerPackingSlip = useField('text');
+  const partNumber = useField('text');
+  const quantity = useField('number');
+  const bins = useField('number');
+
   return (
     <div className="w-full max-w-5xl">
       <form className="shadow-md rounded px-8 py-6">
@@ -10,7 +17,7 @@ const ReceivingForm = () => {
           <label className="form-label" htmlFor="date">
             Date
           </label>
-          <input className="form-input" type="date" name="date" id="date" />
+          <input className="form-input" {...date} name="date" id="date" />
         </div>
         {/* Customer Select */}
         <div className="mb-4">
@@ -45,7 +52,7 @@ const ReceivingForm = () => {
           </label>
           <input
             className="form-input"
-            type="text"
+            {...customerPackingSlip}
             name="customer-packing-slip"
             id="customer-packing-slip"
             placeholder="17896438"
@@ -61,7 +68,7 @@ const ReceivingForm = () => {
               className="form-input"
               name="part-number"
               id="part-number"
-              type="text"
+              {...partNumber}
               placeholder="3030-8629"
             />
           </div>
@@ -73,7 +80,7 @@ const ReceivingForm = () => {
               className="form-input"
               name="quantity"
               id="quantity"
-              type="number"
+              {...quantity}
               placeholder="120"
             />
           </div>
@@ -85,7 +92,7 @@ const ReceivingForm = () => {
               className="form-input"
               name="bins"
               id="bins"
-              type="number"
+              {...bins}
               placeholder="2"
             />
           </div>
