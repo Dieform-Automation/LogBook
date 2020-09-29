@@ -2,13 +2,19 @@ import React from 'react';
 import Layout from '../components/Layout';
 import BoxIcon from '../assets/box.svg';
 import TruckIcon from '../assets/truck.svg';
+import { useHistory } from 'react-router-dom';
 
 const Landing = () => {
+  let history = useHistory();
+
   return (
     <Layout>
       <div className="h-full flex flex-col lg:flex-row lg:justify-evenly lg:p-40">
         <button
           id="receiving"
+          onClick={() => {
+            history.push('/receiving');
+          }}
           className="bg-blue-600 hover:bg-blue-700 rounded-lg m-5 flex-grow max-w-4xl transform hover:-translate-y-1 hover:scale-110 transition duration-300 ease-in-out "
         >
           <div className="flex flex-col h-full justify-center">
