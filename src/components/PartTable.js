@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useField from '../hooks/useField';
 import TrashIcon from '../assets/trash.svg';
 import usePartStore from '../hooks/usePartStore';
+import { useRouteMatch } from 'react-router-dom';
 
 const PartTable = () => {
   const { parts, addPart, removePart } = usePartStore((state) => ({ ...state }));
@@ -11,6 +12,8 @@ const PartTable = () => {
   const bins = useField('text');
 
   const [error, setError] = useState('');
+
+  const isShipping = useRouteMatch('/shipping');
 
   const isValidPart = () => {
     let message = '';
@@ -94,7 +97,9 @@ const PartTable = () => {
         </div>
         <div className="w-full md:w-auto px-3">
           <button
-            className="btn btn-blue uppercase font-bold w-full max-w-screen-md whitespace-no-wrap"
+            className={`${
+              isShipping ? 'btn-green' : 'btn-blue'
+            } btn uppercase font-bold w-full max-w-screen-md whitespace-no-wrap`}
             type="button"
             onClick={addPartToTable}
           >
