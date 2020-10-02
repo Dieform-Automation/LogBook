@@ -24,6 +24,9 @@ const Landing = () => {
         </button>
         <button
           id="shipping"
+          onClick={() => {
+            history.push('/shipping');
+          }}
           className="bg-green-500 hover:bg-green-600 rounded-lg m-5 flex-grow max-w-4xl transform hover:-translate-y-1 hover:scale-110 transition duration-300 ease-in-out "
         >
           <div className="flex flex-col h-full justify-center">
