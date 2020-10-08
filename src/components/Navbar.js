@@ -39,6 +39,7 @@ const Navbar = () => {
                 {/* Dropdown Button */}
                 <div className="relative">
                   <a
+                    id="dropdown-button"
                     onClick={() => setDropdownIsOpen(!dropdownIsOpen)}
                     className="relative z-10 cursor-pointer flex items-center nav-link"
                   >
@@ -52,6 +53,7 @@ const Navbar = () => {
                       It has no visual styling, it is responsible for closing the menu if the user clicks anywhere on the screen 
                   */}
                   <button
+                    id="overlay-button"
                     className={`${
                       dropdownIsOpen ? 'block' : 'hidden'
                     } fixed inset-0 h-full w-full cursor-default`}
@@ -60,6 +62,7 @@ const Navbar = () => {
 
                   {/* Dropdown Menu */}
                   <div
+                    id="dropdown"
                     onClick={() => setDropdownIsOpen(false)}
                     className={`${
                       dropdownIsOpen ? 'block' : 'hidden'
