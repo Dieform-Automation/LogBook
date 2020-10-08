@@ -55,7 +55,8 @@ const Navbar = () => {
                     </svg>
                   </a>
 
-                  {/* Overlay Button
+                  {/* 
+                      Overlay Button
                       This is a hidden button that appears when the dropdown menu is open and covers the whole screen.
                       It has no visual styling, it is responsible for closing the menu if the user clicks anywhere on the screen 
                   */}
@@ -105,26 +106,24 @@ const Navbar = () => {
           </div>
 
           <div className="-mr-2 flex md:hidden">
-            {/* <!-- Mobile menu button --> */}
+            {/*  Mobile menu button  */}
             <button
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
               onClick={() => setMenuIsOpen(!menuIsOpen)}
             >
-              {/* <!-- Menu open: "hidden", Menu closed: "block" --> */}
+              {/* Menu open: "hidden", Menu closed: "block" */}
               <MenuIcon className={`${menuIsOpen ? 'hidden' : 'block'} h-6 w-6`} />
 
-              {/* <!-- Menu open: "block", Menu closed: "hidden" --> */}
+              {/* Menu open: "block", Menu closed: "hidden" */}
               <CrossIcon className={`${menuIsOpen ? 'block' : 'hidden'} h-6 w-6`} />
             </button>
           </div>
         </div>
       </div>
-      {/* 
-    <!--
-    Mobile menu, toggle classNamees based on menu state.
-    
-    Open: "block", closed: "hidden"
-  --> */}
+      {/*
+          Mobile menu, toggle classNamees based on menu state.
+          Open: "block", closed: "hidden"
+      */}
       <div
         onClick={() => setMenuIsOpen(false)}
         className={`${menuIsOpen ? 'block' : 'hidden'} md:hidden`}
