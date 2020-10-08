@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import logo from '../assets/logo.png';
 import { NavLink } from 'react-router-dom';
+import MenuIcon from '../assets/menu.svg';
+import CrossIcon from '../assets/cross.svg';
+
 const Navbar = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
@@ -19,22 +22,24 @@ const Navbar = () => {
               <div className="ml-10 flex items-baseline space-x-4">
                 <NavLink
                   to="/receiving"
-                  activeClassName="outline-none text-white bg-gray-700"
-                  className="px-3 py-2 rounded-md font-medium text-gray-300 hover:text-white hover:bg-gray-700"
+                  activeClassName="active-link"
+                  className="nav-link"
                 >
                   Receiving
                 </NavLink>
                 <NavLink
                   to="/shipping"
-                  activeClassName="outline-none text-white bg-gray-700"
-                  className="cursor-pointer px-3 py-2 rounded-md font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700"
+                  activeClassName="active-link"
+                  className="nav-link"
                 >
                   Shipping
                 </NavLink>
+
+                {/* Dropdown Button */}
                 <div className="relative">
                   <a
                     onClick={() => setDropdownIsOpen(!dropdownIsOpen)}
-                    className="relative z-10 cursor-pointer flex items-center px-3 py-2 rounded-md font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none"
+                    className="relative z-10 cursor-pointer flex items-center nav-link"
                   >
                     Manage Data
                     <svg
@@ -49,12 +54,19 @@ const Navbar = () => {
                       />
                     </svg>
                   </a>
+
+                  {/* Overlay Button
+                      This is a hidden button that appears when the dropdown menu is open and covers the whole screen.
+                      It has no visual styling, it is responsible for closing the menu if the user clicks anywhere on the screen 
+                  */}
                   <button
                     className={`${
                       dropdownIsOpen ? 'block' : 'hidden'
                     } fixed inset-0 h-full w-full cursor-default`}
                     onClick={() => setDropdownIsOpen(false)}
                   />
+
+                  {/* Dropdown Menu */}
                   <div
                     onClick={() => setDropdownIsOpen(false)}
                     className={`${
@@ -64,24 +76,24 @@ const Navbar = () => {
                     <div className="py-1 rounded-md bg-gray-800 shadow-xs">
                       <NavLink
                         to="/customers"
-                        activeClassName="outline-none text-white bg-gray-700"
-                        className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none"
+                        activeClassName="active-link"
+                        className="nav-link block text-sm"
                       >
                         Customers
                       </NavLink>
 
                       <NavLink
                         to="/parts"
-                        activeClassName="outline-none text-white bg-gray-700"
-                        className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none"
+                        activeClassName="active-link"
+                        className="nav-link block text-sm"
                       >
                         Parts
                       </NavLink>
 
                       <NavLink
                         to="/purchase-orders"
-                        activeClassName="outline-none text-white bg-gray-700"
-                        className="block px-4 py-2 text-sm  text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none"
+                        activeClassName="active-link"
+                        className="nav-link block text-sm"
                       >
                         Purchase Orders
                       </NavLink>
@@ -99,33 +111,10 @@ const Navbar = () => {
               onClick={() => setMenuIsOpen(!menuIsOpen)}
             >
               {/* <!-- Menu open: "hidden", Menu closed: "block" --> */}
-              <svg
-                className={`${menuIsOpen ? 'hidden' : 'block'} h-6 w-6`}
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+              <MenuIcon className={`${menuIsOpen ? 'hidden' : 'block'} h-6 w-6`} />
+
               {/* <!-- Menu open: "block", Menu closed: "hidden" --> */}
-              <svg
-                className={`${menuIsOpen ? 'block' : 'hidden'} h-6 w-6`}
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              <CrossIcon className={`${menuIsOpen ? 'block' : 'hidden'} h-6 w-6`} />
             </button>
           </div>
         </div>
@@ -143,16 +132,16 @@ const Navbar = () => {
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 ">
           <NavLink
             to="/receiving"
-            activeClassName="outline-none text-white bg-gray-700"
-            className="block px-3 py-1 rounded-md text-base font-medium text-white focus:outline-none focus:text-white focus:bg-gray-700"
+            activeClassName="active-link"
+            className="nav-link block"
           >
             Receiving
           </NavLink>
 
           <NavLink
             to="/shipping"
-            activeClassName="outline-none text-white bg-gray-700"
-            className="block px-3 py-1 rounded-md text-base font-medium text-gray-300 focus:outline-none focus:text-white focus:bg-gray-700"
+            activeClassName="active-link"
+            className="nav-link block"
           >
             Shipping
           </NavLink>
@@ -163,22 +152,22 @@ const Navbar = () => {
 
           <NavLink
             to="/customers"
-            activeClassName="outline-none text-white bg-gray-700"
-            className="block px-3 py-1 rounded-md text-sm font-medium text-gray-300 focus:outline-none focus:text-white focus:bg-gray-700"
+            activeClassName="active-link"
+            className="nav-link block text-sm py-1"
           >
             Customers
           </NavLink>
           <NavLink
             to="/parts"
-            activeClassName="outline-none text-white bg-gray-700"
-            className="block px-3 py-1 rounded-md text-sm font-medium text-gray-300 focus:outline-none focus:text-white focus:bg-gray-700"
+            activeClassName="active-link"
+            className="nav-link block text-sm py-1"
           >
             Parts
           </NavLink>
           <NavLink
             to="/purchase-orders"
-            activeClassName="outline-none text-white bg-gray-700"
-            className="block px-3 py-1 rounded-md text-sm font-medium text-gray-300 focus:outline-none focus:text-white focus:bg-gray-700"
+            activeClassName="active-link"
+            className="nav-link block text-sm py-1"
           >
             Purchase Orders
           </NavLink>
