@@ -4,6 +4,7 @@ import Landing from './views/Landing';
 import ReceivingForm from './components/ReceivingForm';
 import ShippingForm from './components/ShippingForm';
 import Layout from './components/Layout';
+import Customers from './views/Customers';
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       <Switch>
         <Route path="/receiving" component={ReceivingForm} />
         <Route path="/shipping" component={ShippingForm} />
+        <Route path="/customers" component={Customers} />
         <Route path="/" component={Landing} />
         <Route path="*" render={() => <Redirect to="/" />} />
       </Switch>
