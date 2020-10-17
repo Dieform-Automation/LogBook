@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
+
 import useField from '../hooks/useField';
 import usePartStore from '../hooks/usePartStore';
 import Header from './Header';
 import PartTable from './PartTable';
-import DropdownArrow from '../assets/dropdown-arrow.svg';
 import useCustomers from '../hooks/useCustomers';
 
 const ReceivingForm = () => {
@@ -33,6 +34,11 @@ const ReceivingForm = () => {
   if (status === 'loading') return <div>Loading...</div>;
   if (status === 'error') return <div>Error {error.message}</div>;
 
+  const options = customers.map((customer) => ({
+    value: customer.id,
+    label: customer.name,
+  }));
+
   return (
     <section>
       <Header title="Receiving" />
@@ -56,25 +62,12 @@ const ReceivingForm = () => {
             <label className="form-label" htmlFor="customer">
               Customer
             </label>
-            <div className="relative w-full">
-              <select
-                name="customer"
-                id="customer"
-                className="shadow appearance-none border rounded w-full px-2 py-2 text-gray-700 border-gray-400 hover:border-gray-500 leading-tight focus:outline-none focus:shadow-outline"
-                required
-                value={customerId}
-                onChange={(event) => setCustomerId(Number(event.target.value))}
-              >
-                {customers.map((customer) => (
-                  <option key={customer.id} value={customer.id}>
-                    {customer.name}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <DropdownArrow className="h-4 w-4" />
-              </div>
-            </div>
+            <Select
+              className="shadow"
+              options={options}
+              defaultValue={options[0]}
+              onChange={(option) => setCustomerId(option.value)}
+            />
           </div>
           {/* Customer Packing Slip */}
           <div className="mb-4">
