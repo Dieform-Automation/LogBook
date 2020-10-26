@@ -1,9 +1,14 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 
-export default function useParts() {
-  return useQuery('parts', async () => {
-    const { data } = await axios.get('/api/part/');
-    return data;
-  });
+export default function useParts(customerId) {
+  return customerId
+    ? useQuery(['parts', customerId], async () => {
+        const { data } = await axios.get(`/api/part/?customer_id=${customerId}`);
+        return data;
+      })
+    : useQuery('parts', async () => {
+        const { data } = await axios.get('/api/part/');
+        return data;
+      });
 }

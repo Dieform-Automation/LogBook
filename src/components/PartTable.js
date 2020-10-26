@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
-import useField from '../hooks/useField';
-import TrashIcon from '../assets/trash.svg';
-import usePartStore from '../hooks/usePartStore';
 import { useRouteMatch } from 'react-router-dom';
+import Select from 'react-select';
+import PropTypes from 'prop-types';
 
-const PartTable = () => {
-  const { parts, addPart, removePart } = usePartStore((state) => ({ ...state }));
+import useField from '../hooks/useField';
+import useParts from '../hooks/useParts';
+import usePartTable from '../hooks/usePartTable';
+import TrashIcon from '../assets/trash.svg';
 
-  const partNumber = useField('text');
+const PartTable = ({ customerId }) => {
+  const { receivedParts, addPart, removePart } = usePartTable((state) => ({ ...state }));
+  const { data: parts, status, error } = useParts(customerId);
+  const isShipping = useRouteMatch('/shipping');
+
+  const [formError, setFormError] = useState('');
+  const [selectedPart, setSelectedPart] = useState();
   const quantity = useField('text');
   const bins = useField('text');
-
-  const [error, setError] = useState('');
-
-  const isShipping = useRouteMatch('/shipping');
 
   const isValidPart = () => {
     let message = '';
 
-    const existingPart = parts.some((part) => {
-      return part.partNumber === partNumber.fields.value;
+    const existingPart = receivedParts.some((part) => {
+      return part.id === selectedPart.value;
     });
 
-    if (partNumber.fields.value === '') {
+    if (!selectedPart) {
       message = 'Part number is required';
     } else if (existingPart) {
       message = 'Part number already exists';
@@ -33,10 +36,10 @@ const PartTable = () => {
     }
 
     if (message !== '') {
-      setError(message);
+      setFormError(message);
       return false;
     } else {
-      setError('');
+      setFormError('');
       return true;
     }
   };
@@ -44,16 +47,24 @@ const PartTable = () => {
   const addPartToTable = () => {
     if (isValidPart()) {
       const part = {
-        partNumber: partNumber.fields.value,
+        id: selectedPart.value,
+        partNumber: selectedPart.label,
         quantity: Number(quantity.fields.value),
         bins: Number(bins.fields.value),
       };
       addPart(part);
-      partNumber.reset();
       quantity.reset();
       bins.reset();
     }
   };
+
+  if (status === 'loading') return <div>Loading...</div>;
+  if (status === 'error') return <div>Error {error.message}</div>;
+
+  const options = parts.map((part) => ({
+    value: part.id,
+    label: part.number,
+  }));
 
   return (
     <div>
@@ -63,13 +74,7 @@ const PartTable = () => {
           <label className="form-label" htmlFor="part-number">
             Part Number
           </label>
-          <input
-            className="form-input"
-            name="part-number"
-            id="part-number"
-            {...partNumber.fields}
-            placeholder="3030-8629"
-          />
+          <Select className="shadow" options={options} onChange={setSelectedPart} />
         </div>
         <div className="w-full md:flex-1 px-3 mb-4 md:mb-0">
           <label className="form-label" htmlFor="quantity">
@@ -108,7 +113,7 @@ const PartTable = () => {
         </div>
       </div>
       {/* Error Message */}
-      <p className="text-center text-red-500 font-semibold text-sm my-3">{error}</p>
+      <p className="text-center text-red-500 font-semibold text-sm my-3">{formError}</p>
       {/* Part Table */}
       <div className="shadow overflow-x-auto border border-gray-400 rounded mb-6">
         <table className="min-w-full divide-y divide-gray-400">
@@ -127,7 +132,7 @@ const PartTable = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {parts.map((part, key) => {
+            {receivedParts.map((part, key) => {
               return (
                 <tr key={key}>
                   <td className="px-6 py-3 whitespace-no-wrap">{part.partNumber}</td>
@@ -149,4 +154,7 @@ const PartTable = () => {
   );
 };
 
+PartTable.propTypes = {
+  customerId: PropTypes.number,
+};
 export default PartTable;

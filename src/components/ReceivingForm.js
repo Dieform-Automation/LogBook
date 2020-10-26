@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 
 import useField from '../hooks/useField';
-import usePartStore from '../hooks/usePartStore';
+import usePartTable from '../hooks/usePartTable';
 import Header from './Header';
 import PartTable from './PartTable';
 import useCustomers from '../hooks/useCustomers';
@@ -11,7 +11,10 @@ const ReceivingForm = () => {
   const [customerId, setCustomerId] = useState();
   const customerPackingSlip = useField('text');
   const date = useField('date');
-  const parts = usePartStore((state) => state.parts);
+  const [receivedParts, reset] = usePartTable((state) => [
+    state.receivedParts,
+    state.reset,
+  ]);
   const { data: customers, status, error } = useCustomers();
 
   useEffect(() => {
@@ -26,7 +29,7 @@ const ReceivingForm = () => {
       customerId,
       customerPackingSlip: customerPackingSlip.fields.value,
       date: date.fields.value,
-      received_parts: [...parts],
+      received_parts: [...receivedParts],
     };
     console.log(payload);
   };
@@ -65,8 +68,18 @@ const ReceivingForm = () => {
             <Select
               className="shadow"
               options={options}
-              defaultValue={options[0]}
-              onChange={(option) => setCustomerId(option.value)}
+              onChange={(option) => {
+                let shouldChange = true;
+                if (receivedParts.length > 0) {
+                  shouldChange = confirm(
+                    'Changing customers will remove existing part entries. Are you sure?'
+                  );
+                }
+                if (shouldChange) {
+                  reset();
+                  setCustomerId(option.value);
+                }
+              }}
             />
           </div>
           {/* Customer Packing Slip */}
@@ -83,7 +96,7 @@ const ReceivingForm = () => {
               required
             />
           </div>
-          <PartTable />
+          <PartTable customerId={customerId} />
           {/* Submit Button */}
           <div className="flex justify-center">
             <button
