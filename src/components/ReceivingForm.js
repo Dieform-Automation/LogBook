@@ -6,6 +6,7 @@ import usePartTable from '../hooks/usePartTable';
 import Header from './Header';
 import PartTable from './PartTable';
 import useCustomers from '../hooks/useCustomers';
+import useCreateReceivingOrder from '../hooks/useCreateReceivingOrder';
 
 const ReceivingForm = () => {
   const [customerId, setCustomerId] = useState();
@@ -16,6 +17,7 @@ const ReceivingForm = () => {
     state.reset,
   ]);
   const { data: customers, status, error } = useCustomers();
+  const [createReceivingOrder, { status: createStatus }] = useCreateReceivingOrder();
 
   useEffect(() => {
     if (customers && !customerId) {
@@ -26,12 +28,20 @@ const ReceivingForm = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     const payload = {
-      customerId,
-      customerPackingSlip: customerPackingSlip.fields.value,
+      customer_id: customerId,
+      customer_packing_slip: customerPackingSlip.fields.value,
       date: date.fields.value,
-      received_parts: [...receivedParts],
+      received_parts: receivedParts.map((part) => {
+        return {
+          part_id: part.id,
+          part_quantity: part.quantity,
+          bins: part.bins,
+        };
+      }),
     };
     console.log(payload);
+    createReceivingOrder(payload);
+    reset();
   };
 
   if (status === 'loading') return <div>Loading...</div>;
@@ -103,7 +113,13 @@ const ReceivingForm = () => {
               className="btn btn-blue uppercase font-bold w-full max-w-screen-md"
               type="submit"
             >
-              Submit
+              {createStatus === 'loading'
+                ? 'Saving...'
+                : createStatus === 'error'
+                ? 'Error!'
+                : createStatus === 'success'
+                ? 'Saved!'
+                : 'Submit'}
             </button>
           </div>
         </form>
