@@ -6,6 +6,7 @@ import useGlobalState from '../hooks/useGlobalState';
 import useCustomers from '../hooks/useCustomers';
 
 import PartTable from './PartTable';
+import useCreateRecOrder from '../hooks/useCreateRecOrder';
 
 const ReceivingForm = () => {
   const [selectedCustomer, setSelectedCustomer] = useState();
@@ -18,6 +19,7 @@ const ReceivingForm = () => {
   ]);
 
   const customersQuery = useCustomers();
+  const [createRecOrder] = useCreateRecOrder();
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -34,6 +36,16 @@ const ReceivingForm = () => {
       }),
     };
     console.log(payload);
+    createRecOrder(payload, {
+      onSuccess: () => {
+        customerPackingSlip.reset();
+        resetRecParts();
+      },
+      onError: (err) => {
+        console.log(err);
+        alert(err.message);
+      },
+    });
   };
 
   return (
