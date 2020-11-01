@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 
 import useField from '../hooks/useField';
 import useParts from '../hooks/useParts';
-import usePartTable from '../hooks/usePartTable';
+import useGlobalState from '../hooks/useGlobalState';
 import TrashIcon from '../assets/trash.svg';
 
 const PartTable = ({ customerId }) => {
-  const { receivedParts, addPart, removePart } = usePartTable((state) => ({ ...state }));
+  const { receivedParts, addRecPart, removeRecPart } = useGlobalState((state) => ({
+    ...state,
+  }));
   const { data: parts, status, error } = useParts(customerId);
   const isShipping = useRouteMatch('/shipping');
 
@@ -52,7 +54,7 @@ const PartTable = ({ customerId }) => {
         quantity: Number(quantity.fields.value),
         bins: Number(bins.fields.value),
       };
-      addPart(part);
+      addRecPart(part);
       quantity.reset();
       bins.reset();
     }
@@ -141,7 +143,7 @@ const PartTable = ({ customerId }) => {
                   <td className="px-6 py-3 whitespace-no-wrap">
                     <TrashIcon
                       className="w-6 h-6 cursor-pointer text-red-600"
-                      onClick={() => removePart(key)}
+                      onClick={() => removeRecPart(key)}
                     />
                   </td>
                 </tr>

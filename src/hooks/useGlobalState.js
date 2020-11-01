@@ -3,21 +3,21 @@ import create from 'zustand';
 // Arrow Function Syntax
 // params => ({foo: "a"}) returns the object {foo: "a"}
 
-const usePartTable = create((set) => ({
+const useGlobalState = create((set) => ({
   receivedParts: [],
-  addPart: (part) => {
+  addRecPart: (part) => {
     set((state) => ({ receivedParts: state.receivedParts.concat(part) }));
   },
-  removePart: (key) => {
+  removeRecPart: (key) => {
     set((state) => ({
       receivedParts: state.receivedParts.filter((_, index) => {
         return index !== key;
       }),
     }));
   },
-  reset: () => {
+  resetRecParts: () => {
     set(() => ({ receivedParts: [] }));
   },
 }));
 
-export default usePartTable;
+export default useGlobalState;

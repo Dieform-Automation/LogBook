@@ -2,23 +2,21 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 
 import useField from '../hooks/useField';
-import usePartTable from '../hooks/usePartTable';
+import useGlobalState from '../hooks/useGlobalState';
+import useCustomers from '../hooks/useCustomers';
+
 import Header from './Header';
 import PartTable from './PartTable';
-import useCustomers from '../hooks/useCustomers';
-import useCreateReceivingOrder from '../hooks/useCreateReceivingOrder';
 
 const ReceivingForm = () => {
   const [customerId, setCustomerId] = useState();
   const customerPackingSlip = useField('text');
   const date = useField('date');
-  const [receivedParts, reset] = usePartTable((state) => [
+  const [receivedParts, resetRecParts] = useGlobalState((state) => [
     state.receivedParts,
-    state.reset,
+    state.resetRecParts,
   ]);
   const { data: customers, status, error } = useCustomers();
-  const [createReceivingOrder, { status: createStatus }] = useCreateReceivingOrder();
-
   useEffect(() => {
     if (customers && !customerId) {
       setCustomerId(customers[0].id);
@@ -40,8 +38,6 @@ const ReceivingForm = () => {
       }),
     };
     console.log(payload);
-    createReceivingOrder(payload);
-    reset();
   };
 
   if (status === 'loading') return <div>Loading...</div>;
@@ -86,7 +82,7 @@ const ReceivingForm = () => {
                   );
                 }
                 if (shouldChange) {
-                  reset();
+                  resetRecParts();
                   setCustomerId(option.value);
                 }
               }}
@@ -113,13 +109,7 @@ const ReceivingForm = () => {
               className="btn btn-blue uppercase font-bold w-full max-w-screen-md"
               type="submit"
             >
-              {createStatus === 'loading'
-                ? 'Saving...'
-                : createStatus === 'error'
-                ? 'Error!'
-                : createStatus === 'success'
-                ? 'Saved!'
-                : 'Submit'}
+              Submit
             </button>
           </div>
         </form>
