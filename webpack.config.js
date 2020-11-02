@@ -8,7 +8,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const outputDirectory = 'dist';
 
-module.exports = () => {
+module.exports = (env) => {
+  console.log(env);
   // Get the root path
   const currentPath = path.join(__dirname);
   console.log(currentPath);
