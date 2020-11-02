@@ -5,18 +5,23 @@ import ReceivingForm from './components/ReceivingForm';
 import ShippingForm from './components/ShippingForm';
 import Layout from './components/Layout';
 import Customers from './views/Customers';
+import { ReactQueryCacheProvider, QueryCache } from 'react-query';
+
+const queryCache = new QueryCache();
 
 const App = () => {
   return (
-    <Layout>
-      <Switch>
-        <Route path="/receiving" component={ReceivingForm} />
-        <Route path="/shipping" component={ShippingForm} />
-        <Route path="/customers" component={Customers} />
-        <Route path="/" component={Landing} />
-        <Route path="*" render={() => <Redirect to="/" />} />
-      </Switch>
-    </Layout>
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <Layout>
+        <Switch>
+          <Route path="/receiving" component={ReceivingForm} />
+          <Route path="/shipping" component={ShippingForm} />
+          <Route path="/customers" component={Customers} />
+          <Route path="/" component={Landing} />
+          <Route path="*" render={() => <Redirect to="/" />} />
+        </Switch>
+      </Layout>
+    </ReactQueryCacheProvider>
   );
 };
 

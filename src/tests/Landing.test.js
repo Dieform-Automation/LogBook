@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Landing from './Landing';
+import Landing from '../views/Landing';
 
 test('landing page renders two buttons', () => {
   const component = render(<Landing />);

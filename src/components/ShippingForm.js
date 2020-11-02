@@ -1,16 +1,13 @@
 import React from 'react';
 import useField from '../hooks/useField';
-import usePartStore from '../hooks/usePartStore';
 import PartTable from './PartTable';
 import DropdownArrow from '../assets/dropdown-arrow.svg';
 
 const ShippingForm = () => {
   const date = useField('date');
-  const parts = usePartStore((state) => state.parts);
 
   const onSubmit = (event) => {
     event.preventDefault();
-    console.log(parts);
   };
 
   return (

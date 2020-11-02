@@ -4,14 +4,24 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const outputDirectory = 'dist';
-
 module.exports = {
   entry: path.join(__dirname, 'src', 'index.js'),
   output: {
-    path: path.resolve(__dirname, outputDirectory),
-    filename: '[name].bundle.js',
-    chunkFilename: '[id].js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[contenthash].js',
+  },
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
   module: {
     rules: [
@@ -40,31 +50,17 @@ module.exports = {
       },
     ],
   },
-  devServer: {
-    contentBase: path.resolve(__dirname, outputDirectory),
-    compress: true,
-    open: true,
-    clientLogLevel: 'silent',
-    historyApiFallback: true,
-    hot: true,
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        pathRewrite: { '^/api': '' },
-      },
-    },
-  },
-  devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false,
   plugins: [
     new webpack.ProgressPlugin(),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].bundle.css',
-      chunkFilename: '[id].css',
+      filename: '[name].[contenthash].css',
     }),
     new HtmlWebPackPlugin({
       template: './public/index.html',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify(process.env.API_URL),
     }),
   ],
 };
