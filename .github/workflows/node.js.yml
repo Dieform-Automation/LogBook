@@ -24,8 +24,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - env:
-        API_URL: ${{ secrets.API_URL }}
     - run: yarn install --frozen-lockfile
     - run: yarn test
     - run: yarn build
+    - env:
+        API_URL: ${{ secrets.API_URL }}
