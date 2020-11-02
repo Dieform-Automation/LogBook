@@ -11,9 +11,11 @@ const outputDirectory = 'dist';
 module.exports = () => {
   // Get the root path
   const currentPath = path.join(__dirname);
+  console.log(currentPath);
 
   // Create the fallback path (the production .env)
   const basePath = currentPath + '/.env';
+  console.log(basePath);
 
   // We're concatenating the environment name to our filename to specify the correct env file!
   const envPath = basePath + '.' + process.env.NODE_ENV;
