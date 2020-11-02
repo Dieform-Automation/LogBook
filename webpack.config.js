@@ -72,12 +72,6 @@ module.exports = () => {
       historyApiFallback: true,
       hot: true,
       port: 3000,
-      proxy: {
-        '/api': {
-          target: 'http://localhost:5000',
-          pathRewrite: { '^/api': '' },
-        },
-      },
     },
     devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false,
     plugins: [
