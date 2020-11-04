@@ -79,10 +79,11 @@ const PartTable = ({ customerId }) => {
           {/* Inline Fields & Button */}
           <div className="flex flex-wrap -mx-3 mb-4 items-end">
             <div className="w-full md:flex-1 px-3 mb-4 md:mb-0">
-              <label className="form-label" htmlFor="part-number">
+              <label className="form-label" htmlFor="part-number" id="part-number">
                 Part Number
               </label>
               <Select
+                aria-labelledby="part-number"
                 className="shadow"
                 value={selectedPart}
                 options={partsQuery.data.map((p) => ({ value: p.id, label: p.number }))}
@@ -97,6 +98,7 @@ const PartTable = ({ customerId }) => {
                 className="form-input"
                 name="quantity"
                 id="quantity"
+                data-testid="quantity"
                 {...quantity.fields}
                 placeholder="120"
               />
@@ -109,6 +111,7 @@ const PartTable = ({ customerId }) => {
                 className="form-input"
                 name="bins"
                 id="bins"
+                data-testid="bins"
                 {...bins.fields}
                 placeholder="2"
               />
@@ -119,6 +122,7 @@ const PartTable = ({ customerId }) => {
                   isShipping ? 'btn-green' : 'btn-blue'
                 } btn uppercase font-bold w-full max-w-screen-md whitespace-no-wrap`}
                 type="button"
+                data-testid="add-part-btn"
                 onClick={addPartToTable}
               >
                 Add Part
