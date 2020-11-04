@@ -65,6 +65,7 @@ const ReceivingForm = () => {
                 {...date.fields}
                 name="date"
                 id="date"
+                data-testid="date"
                 required
               />
             </div>
@@ -96,6 +97,7 @@ const ReceivingForm = () => {
                 Customer Packing Slip
               </label>
               <input
+                data-testid="packing-slip"
                 className="form-input"
                 {...customerPackingSlip.fields}
                 name="customer-packing-slip"
