@@ -11,7 +11,7 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 bg-gray-800 z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <div className="flex-shrink-0">
@@ -122,7 +122,7 @@ const Navbar = () => {
         onClick={() => setMenuIsOpen(false)}
         className={`${menuIsOpen ? 'block' : 'hidden'} md:hidden`}
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 ">
+        <div className="px-2 pb-3 space-y-1">
           <NavLink
             to="/receiving"
             activeClassName="active-link"
