@@ -1,20 +1,66 @@
 import React from 'react';
+import DataTable from '../components/DataTable';
 import Header from '../components/Header';
 import useCustomers from '../hooks/useCustomers';
 
-const Customers = () => {
-  const { data, status, error } = useCustomers();
+const parseData = (customers) => {
+  if (customers) {
+    return customers.map((c) => {
+      return {
+        ...c,
+        name: c.name,
+        contact: c.point_of_contact,
+        phone: c.phone,
+        email: c.email,
+        address: `${c.street}, ${c.city}`,
+      };
+    });
+  } else {
+    return [];
+  }
+};
 
-  if (status === 'loading') return <div>Loading...</div>;
-  if (status === 'error') return <div>Error {error.message}</div>;
+const Customers = () => {
+  const { data: customers, isLoading } = useCustomers();
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Name',
+        accessor: 'name',
+      },
+      {
+        Header: 'Contact',
+        accessor: 'contact',
+      },
+      {
+        Header: 'Phone',
+        accessor: 'phone',
+      },
+      {
+        Header: 'Email',
+        accessor: 'email',
+      },
+      {
+        Header: 'Address',
+        accessor: 'address',
+      },
+    ],
+    []
+  );
+
+  const data = React.useMemo(() => parseData(customers), [customers]);
 
   return (
-    <div>
-      <Header title="Customers" />
-      {data.map((customer) => (
-        <h1 key={customer.id}>{customer.name}</h1>
-      ))}
-    </div>
+    <>
+      {isLoading ? (
+        <span>Loading...</span>
+      ) : (
+        <div className="container mx-auto">
+          <Header title="Customers" />
+          <DataTable columns={columns} data={data} />
+        </div>
+      )}
+    </>
   );
 };
 
