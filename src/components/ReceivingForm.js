@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-
 import useField from '../hooks/useField';
 import useGlobalState from '../hooks/useGlobalState';
 import useCustomers from '../hooks/useCustomers';
@@ -53,7 +52,7 @@ const ReceivingForm = () => {
       {customersQuery.isLoading ? (
         <span>Loading...</span>
       ) : (
-        <div className="shadow-md w-full max-w-3xl bg-white rounded-lg">
+        <div className="mx-auto shadow-md w-full max-w-3xl bg-white rounded-lg">
           <form className="px-8 py-6" onSubmit={onSubmit}>
             {/* Date */}
             <div className="mb-4">
@@ -75,7 +74,6 @@ const ReceivingForm = () => {
                 Customer
               </label>
               <Select
-                className="shadow"
                 options={customersQuery.data.map((c) => ({ value: c.id, label: c.name }))}
                 onChange={(option) => {
                   let shouldChange = true;
