@@ -1,7 +1,9 @@
 import React from 'react';
 import DataTable from '../components/DataTable';
 import Header from '../components/Header';
+import Modal from '../components/Modal';
 import useCustomers from '../hooks/useCustomers';
+import useModal from '../hooks/useModal';
 
 const parseData = (customers) => {
   if (customers) {
@@ -49,6 +51,7 @@ const Customers = () => {
   );
 
   const data = React.useMemo(() => parseData(customers), [customers]);
+  const { isShowing, toggle } = useModal();
 
   return (
     <>
@@ -56,7 +59,13 @@ const Customers = () => {
         <span>Loading...</span>
       ) : (
         <div className="container mx-auto">
-          <Header title="Customers" />
+          <div className="flex justify-between items-center">
+            <Header title="Customers" />
+            <button className="btn btn-blue" onClick={toggle}>
+              Add Customer
+            </button>
+          </div>
+          <Modal isShowing={isShowing} hide={toggle} />
           <DataTable columns={columns} data={data} />
         </div>
       )}
