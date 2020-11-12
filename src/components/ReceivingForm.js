@@ -52,7 +52,7 @@ const ReceivingForm = () => {
       {customersQuery.isLoading ? (
         <span>Loading...</span>
       ) : (
-        <div className="mx-auto shadow-md w-full max-w-3xl bg-white rounded-lg">
+        <div className="shadow-md w-full bg-white rounded-lg">
           <form className="px-8 py-6" onSubmit={onSubmit}>
             {/* Date */}
             <div className="mb-4">
