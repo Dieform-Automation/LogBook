@@ -9,6 +9,9 @@ module.exports = {
       screens: {
         '2xl': '1440px',
       },
+      inset: {
+        '1/2': '50%',
+      },
     },
   },
   variants: {},
