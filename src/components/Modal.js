@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Modal = ({ isShowing, hide, content }) =>
+const Modal = ({ isShowing, hide, title, content }) =>
   isShowing
     ? ReactDOM.createPortal(
         <React.Fragment>
@@ -14,7 +14,8 @@ const Modal = ({ isShowing, hide, content }) =>
             role="dialog"
           >
             <div className="relative bg-white max-w-4xl rounded p-4 center">
-              <div className="flex justify-end">
+              <div className="flex justify-between items-center px-4">
+                <h2 className="font-bold text-2xl tracking-tight">{title}</h2>
                 <button
                   type="button"
                   className="text-2xl text-black"
