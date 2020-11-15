@@ -17,11 +17,11 @@ const customerSchema = yup.object().shape({
       'Please enter a valid postal code'
     )
     .required('Postal code is required'),
+  country: yup.string().required('Country is required'),
   province: yup
     .string()
     .matches(/^[A-Z]{2}$/, 'Please enter a two letter province abbr.')
     .required('Province is required'),
-  country: yup.string().required('Country is required'),
   city: yup.string().required('City is required'),
   street: yup.string().required('Street address is required'),
   email: yup

@@ -17,7 +17,7 @@ const parseData = (customers) => {
         contact: c.point_of_contact,
         phone: c.phone,
         email: c.email,
-        address: `${c.street}, ${c.city}`,
+        address: `${c.street}, ${c.city} ${c.province}`,
       };
     });
   } else {
@@ -70,25 +70,21 @@ const Customers = () => {
     });
   };
 
-  return (
-    <>
-      {isLoading ? (
-        <span>Loading...</span>
-      ) : (
-        <div className="container mx-auto">
-          <div className="flex justify-between items-center">
-            <Header title="Customers" />
-            <button className="btn btn-blue" onClick={toggle}>
-              Add Customer
-            </button>
-          </div>
-          <Modal isShowing={isShowing} hide={toggle} title="Add Customer">
-            <CustomerForm onSubmit={handleSubmit} />
-          </Modal>
-          <DataTable columns={columns} data={data} />
-        </div>
-      )}
-    </>
+  return isLoading ? (
+    <span>Loading...</span>
+  ) : (
+    <div className="container mx-auto">
+      <div className="flex justify-between items-center">
+        <Header title="Customers" />
+        <button className="btn btn-blue" onClick={toggle}>
+          Add Customer
+        </button>
+      </div>
+      <Modal isShowing={isShowing} hide={toggle} title="Add Customer">
+        <CustomerForm onSubmit={handleSubmit} />
+      </Modal>
+      <DataTable columns={columns} data={data} />
+    </div>
   );
 };
 
