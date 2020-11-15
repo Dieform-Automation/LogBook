@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
 @layer components {
   /* Forms */
   .form-label {
@@ -9,7 +17,7 @@
   }
 
   .form-input {
-    @apply shadow appearance-none border rounded w-full px-3 py-2 text-gray-700 border-gray-400 leading-tight;
+    @apply appearance-none border rounded w-full px-3 py-2 text-gray-700 border-gray-400 leading-tight;
   }
 
   .form-input:hover {

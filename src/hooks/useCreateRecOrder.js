@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { useMutation, queryCache } from 'react-query';
+import { useMutation, useQueryCache } from 'react-query';
 
 export default function useCreateRecOrder() {
+  const cache = useQueryCache();
   return useMutation(
     async (payload) => {
       const { data } = await axios.post(
@@ -11,7 +12,7 @@ export default function useCreateRecOrder() {
       return data;
     },
     {
-      onSuccess: () => queryCache.refetchQueries('receiving_orders'),
+      onSuccess: () => cache.invalidateQueries('receiving_orders'),
     }
   );
 }
