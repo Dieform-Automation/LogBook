@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Proptypes from 'prop-types';
 
-const Modal = ({ isShowing, hide, title, content }) =>
-  isShowing
+const Modal = ({ isShowing, hide, title, children }) => {
+  return isShowing
     ? ReactDOM.createPortal(
         <React.Fragment>
           <div className="fixed top-0 left-0 w-screen h-screen bg-black opacity-50" />
@@ -26,12 +27,20 @@ const Modal = ({ isShowing, hide, title, content }) =>
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              {content}
+              {children}
             </div>
           </div>
         </React.Fragment>,
         document.body
       )
     : null;
+};
+
+Modal.propTypes = {
+  isShowing: Proptypes.bool,
+  hide: Proptypes.func,
+  title: Proptypes.string,
+  children: Proptypes.node,
+};
 
 export default Modal;
