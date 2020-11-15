@@ -6,6 +6,7 @@ import ShippingForm from './components/ShippingForm';
 import Layout from './components/Layout';
 import Customers from './views/Customers';
 import { ReactQueryCacheProvider, QueryCache } from 'react-query';
+import { ToastContainer } from 'react-toastify';
 
 const queryCache = new QueryCache();
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="*" render={() => <Redirect to="/" />} />
         </Switch>
       </Layout>
+      <ToastContainer autoClose={4000} newestOnTop={true} limit={3} />
     </ReactQueryCacheProvider>
   );
 };
