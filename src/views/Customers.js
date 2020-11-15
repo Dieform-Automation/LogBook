@@ -1,8 +1,11 @@
 import React from 'react';
+import CustomerForm from '../components/CustomerForm';
 import DataTable from '../components/DataTable';
 import Header from '../components/Header';
 import Modal from '../components/Modal';
 import useCustomers from '../hooks/useCustomers';
+import useCreateCustomer from '../hooks/useCreateCustomer';
+
 import useModal from '../hooks/useModal';
 
 const parseData = (customers) => {
@@ -24,6 +27,8 @@ const parseData = (customers) => {
 
 const Customers = () => {
   const { data: customers, isLoading } = useCustomers();
+  const [createCustomer] = useCreateCustomer();
+
   const columns = React.useMemo(
     () => [
       {
@@ -49,9 +54,21 @@ const Customers = () => {
     ],
     []
   );
-
   const data = React.useMemo(() => parseData(customers), [customers]);
+
   const { isShowing, toggle } = useModal();
+
+  const handleSubmit = (payload) => {
+    createCustomer(payload, {
+      onSuccess: () => {
+        toggle();
+      },
+      onError: (err) => {
+        console.log(err);
+        alert(err.message);
+      },
+    });
+  };
 
   return (
     <>
@@ -65,7 +82,9 @@ const Customers = () => {
               Add Customer
             </button>
           </div>
-          <Modal isShowing={isShowing} hide={toggle} />
+          <Modal isShowing={isShowing} hide={toggle} title="Add Customer">
+            <CustomerForm onSubmit={handleSubmit} />
+          </Modal>
           <DataTable columns={columns} data={data} />
         </div>
       )}
