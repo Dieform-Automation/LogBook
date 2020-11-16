@@ -1,9 +1,16 @@
-import React from 'react';
 import { useField } from 'formik';
-import Select from 'react-select';
+import React from 'react';
+import CreatableSelect from 'react-select/creatable';
 import PropTypes from 'prop-types';
 
-const Dropdown = ({ label, name, options, resetOnChange }) => {
+const CreatableDropdown = ({
+  label,
+  name,
+  options,
+  onCreate,
+  isDisabled,
+  resetOnChange,
+}) => {
   const [selectedOption, setSelectedOption] = React.useState();
   const [field, meta, helpers] = useField(name);
   const { touched, error } = meta;
@@ -25,26 +32,32 @@ const Dropdown = ({ label, name, options, resetOnChange }) => {
       <label className="form-label" htmlFor={field.name}>
         {label}
       </label>
-      <Select
+      <CreatableSelect
         value={selectedOption}
         options={options}
         name={field.name}
+        isDisabled={isDisabled}
         onChange={(option) => handleChange(option)}
+        onCreateOption={(opt) => onCreate(opt)}
       />
       {error && touched ? <p>{error}</p> : null}
     </>
   );
 };
 
-Dropdown.propTypes = {
+CreatableDropdown.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  options: PropTypes.shape({
-    label: PropTypes.string,
-    value: PropTypes.number,
-    data: PropTypes.object,
-  }).isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.any,
+      value: PropTypes.number,
+      data: PropTypes.object,
+    })
+  ).isRequired,
+  onCreate: PropTypes.func.isRequired,
+  isDisabled: PropTypes.bool,
   resetOnChange: PropTypes.any,
 };
 
-export default Dropdown;
+export default CreatableDropdown;

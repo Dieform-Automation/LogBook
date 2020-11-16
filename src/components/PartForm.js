@@ -1,8 +1,13 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
+import { toast } from 'react-toastify';
+
 import useCustomers from '../hooks/useCustomers';
 import usePurchaseOrders from '../hooks/usePurchaseOrders';
-import Dropdown from './Dropdown';
+import useCreatePO from '../hooks/useCreatePO';
+import Dropdown from '../elements/Dropdown';
+import CreatableDropdown from '../elements/CreatableDropdown';
+import TextInput from '../elements/TextInput';
 
 const mapCustomersToOptions = (customers) => {
   if (customers) {
@@ -29,6 +34,7 @@ const mapPurchaseOrderToOptions = (purchaseOrders) => {
 const PartForm = () => {
   const { data: customers, isLoading } = useCustomers();
   const { data: purchaseOrders } = usePurchaseOrders();
+  const [createPO] = useCreatePO();
 
   const customerOptions = React.useMemo(() => mapCustomersToOptions(customers), [
     customers,
@@ -57,15 +63,31 @@ const PartForm = () => {
       {({ values }) => (
         <Form className="p-4 space-y-4">
           <Dropdown label="Customer" name="customer_id" options={customerOptions} />
-          <Dropdown
+          <CreatableDropdown
+            isDisabled={values.customer_id === ''}
             label="Purchase Order"
             name="purchase_order_id"
             options={purchaseOrderOptions.filter((option) => {
               return option.data.customer_id === values.customer_id;
             })}
+            onCreate={(option) => {
+              const payload = {
+                customer_id: values.customer_id,
+                number: Number(option),
+              };
+              createPO(payload, {
+                onError: (err) => {
+                  toast.error('Failed to create purchase order');
+                  console.error(err);
+                },
+              });
+            }}
             resetOnChange={values.customer_id}
           />
-
+          <div className="flex flex-wrap -mx-3 items-end">
+            <TextInput label="Part Name" name="name" type="text" inline />
+            <TextInput label="Part Number" name="number" type="text" inline />
+          </div>
           <button className="btn btn-blue uppercase font-bold w-full" type="submit">
             Submit
           </button>
