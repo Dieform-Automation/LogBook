@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
+import PropTypes from 'prop-types';
 
 import useCustomers from '../hooks/useCustomers';
 import usePurchaseOrders from '../hooks/usePurchaseOrders';
@@ -31,7 +32,7 @@ const mapPurchaseOrderToOptions = (purchaseOrders) => {
   return [];
 };
 
-const PartForm = () => {
+const PartForm = ({ onSubmit }) => {
   const { data: customers, isLoading } = useCustomers();
   const { data: purchaseOrders } = usePurchaseOrders();
   const [createPO] = useCreatePO();
@@ -56,7 +57,7 @@ const PartForm = () => {
         name: '',
       }}
       onSubmit={(values, actions) => {
-        alert(JSON.stringify(values, null, 2));
+        onSubmit(values);
         actions.setSubmitting(false);
       }}
     >
@@ -97,4 +98,7 @@ const PartForm = () => {
   );
 };
 
+PartForm.propTypes = {
+  onSubmit: PropTypes.func,
+};
 export default PartForm;
