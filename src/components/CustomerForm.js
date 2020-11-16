@@ -77,7 +77,7 @@ const CustomerForm = ({ onSubmit }) => {
 
   return (
     <form className="p-4 space-y-4" onSubmit={handleSubmit}>
-      <div className="mb-4">
+      <div>
         <label className="form-label" htmlFor="name">
           Customer Name
         </label>
