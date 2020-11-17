@@ -67,7 +67,7 @@ const Parts = () => {
   return isLoading ? (
     <span>Loading...</span>
   ) : (
-    <div className="container mx-auto">
+    <>
       <div className="flex justify-between items-center">
         <Header title="Parts" />
         <button className="btn btn-blue" onClick={toggle}>
@@ -78,7 +78,7 @@ const Parts = () => {
         <PartForm onSubmit={handleSubmit} />
       </Modal>
       <DataTable columns={columns} data={data} />
-    </div>
+    </>
   );
 };
 

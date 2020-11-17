@@ -73,7 +73,7 @@ const Customers = () => {
   return isLoading ? (
     <span>Loading...</span>
   ) : (
-    <div className="container mx-auto">
+    <>
       <div className="flex justify-between items-center">
         <Header title="Customers" />
         <button className="btn btn-blue" onClick={toggle}>
@@ -84,7 +84,7 @@ const Customers = () => {
         <CustomerForm onSubmit={handleSubmit} />
       </Modal>
       <DataTable columns={columns} data={data} />
-    </div>
+    </>
   );
 };
 

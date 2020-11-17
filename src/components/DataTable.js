@@ -28,7 +28,7 @@ const DataTable = ({ columns, data }) => {
                     headerGroup.headers.map((column, key) => (
                       // Apply the header cell props
                       <th
-                        className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                        className="px-5 py-3 border-b-2 border-gray-200 bg-gray-900 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider"
                         key={key}
                         {...column.getHeaderProps()}
                       >
