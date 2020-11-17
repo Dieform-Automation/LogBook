@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 import Customers from './views/Customers';
 import { ReactQueryCacheProvider, QueryCache } from 'react-query';
 import { ToastContainer } from 'react-toastify';
+import Parts from './views/Parts';
 
 const queryCache = new QueryCache();
 
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/receiving" component={ReceivingForm} />
           <Route path="/shipping" component={ShippingForm} />
           <Route path="/customers" component={Customers} />
+          <Route path="/parts" component={Parts} />
           <Route path="/" component={Landing} />
           <Route path="*" render={() => <Redirect to="/" />} />
         </Switch>
