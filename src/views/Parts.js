@@ -2,7 +2,7 @@ import React from 'react';
 
 import useModal from '../hooks/useModal';
 import DataTable from '../components/DataTable';
-import Header from '../components/Header';
+import Header from '../elements/Header';
 import Modal from '../components/Modal';
 import PartForm from '../components/PartForm';
 import useCreatePart from '../hooks/useCreatePart';
