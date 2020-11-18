@@ -4,19 +4,19 @@ import create from 'zustand';
 // params => ({foo: "a"}) returns the object {foo: "a"}
 
 const usePartTable = create((set) => ({
-  parts: [],
+  partList: [],
   addPart: (part) => {
-    set((state) => ({ parts: state.parts.concat(part) }));
+    set((state) => ({ partList: state.partList.concat(part) }));
   },
   removePart: (key) => {
     set((state) => ({
-      parts: state.parts.filter((_, index) => {
+      partList: state.partList.filter((_, index) => {
         return index !== key;
       }),
     }));
   },
   resetParts: () => {
-    set(() => ({ parts: [] }));
+    set(() => ({ partList: [] }));
   },
 }));
 
