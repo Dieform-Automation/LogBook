@@ -42,7 +42,7 @@ Dropdown.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.any,
-      value: PropTypes.number,
+      value: PropTypes.any,
       data: PropTypes.object,
     })
   ).isRequired,
