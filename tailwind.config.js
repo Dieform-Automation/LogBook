@@ -6,6 +6,9 @@ module.exports = {
   purge: ['./src/**/*.js'],
   theme: {
     extend: {
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
+      },
       screens: {
         '2xl': '1440px',
       },
