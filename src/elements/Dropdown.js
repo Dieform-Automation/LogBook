@@ -33,7 +33,7 @@ const Dropdown = ({ label, name, options, resetOnChange, inline }) => {
 
   return (
     <div className={inline ? 'w-full md:flex-1 px-3' : ''}>
-      <label className="form-label" htmlFor={field.name}>
+      <label className="form-label" id={field.name} htmlFor={field.name}>
         {label}
       </label>
       <Select
@@ -42,6 +42,7 @@ const Dropdown = ({ label, name, options, resetOnChange, inline }) => {
         name={field.name}
         onChange={handleChange}
         isClearable={true}
+        aria-labelledby={field.name}
       />
       {error && touched ? <p>{error}</p> : null}
     </div>

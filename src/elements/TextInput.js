@@ -7,10 +7,10 @@ const TextInput = ({ label, inline, ...props }) => {
 
   return (
     <div className={inline ? 'w-full md:flex-1 px-3' : ''}>
-      <label className="form-label" htmlFor={name}>
+      <label className="form-label" id={field.name} htmlFor={field.name}>
         {label}
       </label>
-      <input className="form-input" {...field} {...props} />
+      <input className="form-input" aria-labelledby={field.name} {...field} {...props} />
       {meta.touched && meta.error ? <span>{meta.error}</span> : null}
     </div>
   );

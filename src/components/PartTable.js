@@ -50,8 +50,8 @@ const PartTable = ({ customerId }) => {
                 resetOnChange={partList}
                 inline
               />
-              <TextInput label="Quantity" name="quantity" inline />
-              <TextInput label="Number of Bins" name="bins" inline />
+              <TextInput label="Quantity" name="quantity" inline data-testid="quantity" />
+              <TextInput label="Number of Bins" name="bins" inline data-testid="bins" />
               <div className="w-full md:w-auto px-3">
                 <button
                   className={`${
