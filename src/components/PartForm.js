@@ -68,7 +68,7 @@ const PartForm = ({ onSubmit }) => {
             }}
             resetOnChange={values.customer_id}
           />
-          <div className="flex flex-wrap -mx-3 items-end">
+          <div className="flex flex-wrap -mx-3 items-end space-y-4 md:space-y-0">
             <TextInput label="Part Name" name="name" type="text" inline />
             <TextInput label="Part Number" name="number" type="text" inline />
           </div>
