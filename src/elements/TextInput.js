@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const TextInput = ({ label, inline, ...props }) => {
-  const [field, meta] = useField(props);
+  const [field] = useField(props);
 
   return (
     <div className={inline ? 'w-full md:flex-1 px-3' : ''}>
@@ -11,7 +11,6 @@ const TextInput = ({ label, inline, ...props }) => {
         {label}
       </label>
       <input className="form-input" aria-labelledby={field.name} {...field} {...props} />
-      {meta.touched && meta.error ? <span>{meta.error}</span> : null}
     </div>
   );
 };

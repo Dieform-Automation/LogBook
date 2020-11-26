@@ -5,13 +5,17 @@ import PropTypes from 'prop-types';
 
 const Dropdown = ({ label, name, options, resetOnChange, inline }) => {
   const [selectedOption, setSelectedOption] = React.useState();
-  const [field, meta, helpers] = useField(name);
-  const { touched, error } = meta;
+  const [field, , helpers] = useField(name);
 
   React.useEffect(() => {
     helpers.setValue('');
-    setSelectedOption(null);
   }, [resetOnChange]);
+
+  React.useEffect(() => {
+    if (field.value === '') {
+      setSelectedOption(null);
+    }
+  }, [field]);
 
   const handleChange = (selectedOption, { action }) => {
     console.log(selectedOption, action);
@@ -25,6 +29,7 @@ const Dropdown = ({ label, name, options, resetOnChange, inline }) => {
       case 'clear':
         setSelectedOption(null);
         helpers.setValue('');
+        helpers.setError(undefined);
         break;
       default:
         break;
@@ -44,7 +49,6 @@ const Dropdown = ({ label, name, options, resetOnChange, inline }) => {
         isClearable={true}
         aria-labelledby={field.name}
       />
-      {error && touched ? <p>{error}</p> : null}
     </div>
   );
 };
