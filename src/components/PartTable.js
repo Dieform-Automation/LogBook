@@ -1,7 +1,8 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Form, Formik } from 'formik';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import useParts from '../hooks/useParts';
 import useMapToOptions from '../hooks/useMapToOptions';
@@ -11,6 +12,19 @@ import Dropdown from '../elements/Dropdown';
 import TextInput from '../elements/TextInput';
 import Error from '../elements/Error';
 import TrashIcon from '../assets/trash.svg';
+import { toast } from 'react-toastify';
+
+const PartTableSchema = Yup.object().shape({
+  bins: Yup.string()
+    .matches(/^[0-9]*$/, 'Bins must be a number')
+    .required('Bins is required'),
+  quantity: Yup.string()
+    .matches(/^[0-9]*$/, 'Quantity must be a number')
+    .required('Quantity is required'),
+  part_id: Yup.string()
+    .matches(/^[0-9]*$/)
+    .required('Please select a part'),
+});
 
 const PartTable = ({ customerId }) => {
   const { partList, addPart, removePart } = usePartTable();
@@ -21,50 +35,56 @@ const PartTable = ({ customerId }) => {
     parts,
   ]);
 
+  const handleSubmit = (formValues, resetForm) => {
+    PartTableSchema.validate(formValues)
+      .then((value) => {
+        const part = {
+          partNumber: partOptions.find((opt) => opt.value === Number(value.part_id))
+            .label,
+          part_id: Number(value.part_id),
+          quantity: Number(value.quantity),
+          bins: Number(value.bins),
+        };
+        addPart(part);
+        resetForm();
+      })
+      .catch((err) => {
+        console.log(err.errors);
+        toast.error(err.errors[0]);
+      });
+  };
+
   return isLoading ? (
     <Loader />
   ) : isError ? (
     <Error />
   ) : (
     <>
-      <Formik
-        initialValues={{ part_id: '', quantity: '', bins: '' }}
-        onSubmit={(values, actions) => {
-          alert(JSON.stringify(values, null, 2));
-          actions.setSubmitting(false);
-          addPart({
-            partNumber: partOptions.find((p) => p.value === values.part_id).label,
-            ...values,
-          });
-
-          actions.resetForm();
-        }}
-      >
-        {() => (
-          <Form>
-            <div className="flex flex-wrap -mx-3 items-end space-y-4 md:space-y-0">
-              <Dropdown
-                label="Part Number"
-                name="part_id"
-                options={partOptions}
-                resetOnChange={partList}
-                inline
-              />
-              <TextInput label="Quantity" name="quantity" inline data-testid="quantity" />
-              <TextInput label="Number of Bins" name="bins" inline data-testid="bins" />
-              <div className="w-full md:w-auto px-3">
-                <button
-                  className={`${
-                    isShipping ? 'btn-green' : 'btn-blue'
-                  } btn uppercase font-bold w-full max-w-screen-md whitespace-no-wrap`}
-                  type="submit"
-                  data-testid="add-part-btn"
-                >
-                  Add Part
-                </button>
-              </div>
+      <Formik initialValues={{ part_id: '', quantity: '', bins: '' }}>
+        {({ values, resetForm }) => (
+          <div className="flex flex-wrap -mx-3 items-end space-y-4 md:space-y-0">
+            <Dropdown
+              label="Part Number"
+              name="part_id"
+              options={partOptions}
+              resetOnChange={partList}
+              inline
+            />
+            <TextInput label="Quantity" name="quantity" inline data-testid="quantity" />
+            <TextInput label="Number of Bins" name="bins" inline data-testid="bins" />
+            <div className="w-full md:w-auto px-3">
+              <button
+                className={`${
+                  isShipping ? 'btn-green' : 'btn-blue'
+                } btn uppercase font-bold w-full max-w-screen-md whitespace-no-wrap`}
+                type="button"
+                data-testid="add-part-btn"
+                onClick={() => handleSubmit(values, resetForm)}
+              >
+                Add Part
+              </button>
             </div>
-          </Form>
+          </div>
         )}
       </Formik>
       {/* Part Table */}
