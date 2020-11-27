@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 import useParts from '../hooks/useParts';
@@ -12,7 +13,6 @@ import Dropdown from '../elements/Dropdown';
 import TextInput from '../elements/TextInput';
 import Error from '../elements/Error';
 import TrashIcon from '../assets/trash.svg';
-import { toast } from 'react-toastify';
 
 const PartTableSchema = Yup.object().shape({
   bins: Yup.string()
@@ -23,7 +23,7 @@ const PartTableSchema = Yup.object().shape({
     .required('Quantity is required'),
   part_id: Yup.string()
     .matches(/^[0-9]*$/)
-    .required('Please select a part'),
+    .required('Part Number is required'),
 });
 
 const PartTable = ({ customerId }) => {
