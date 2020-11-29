@@ -84,14 +84,6 @@ const Navbar = () => {
                       >
                         Parts
                       </NavLink>
-
-                      <NavLink
-                        to="/purchase-orders"
-                        activeClassName="active-link"
-                        className="nav-link block text-sm"
-                      >
-                        Purchase Orders
-                      </NavLink>
                     </div>
                   </div>
                 </div>

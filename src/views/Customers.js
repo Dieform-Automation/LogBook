@@ -1,12 +1,17 @@
 import React from 'react';
-import CustomerForm from '../components/CustomerForm';
-import DataTable from '../components/DataTable';
-import Header from '../components/Header';
-import Modal from '../components/Modal';
-import useCustomers from '../hooks/useCustomers';
-import useCreateCustomer from '../hooks/useCreateCustomer';
 
 import useModal from '../hooks/useModal';
+import useCreateCustomer from '../hooks/useCreateCustomer';
+import useCustomers from '../hooks/useCustomers';
+
+import CustomerForm from '../components/CustomerForm';
+import DataTable from '../components/DataTable';
+import Modal from '../components/Modal';
+
+import Header from '../elements/Header';
+import Loader from '../elements/Loader';
+import Error from '../elements/Error';
+import View from '../elements/View';
 
 const parseData = (customers) => {
   if (customers) {
@@ -26,7 +31,7 @@ const parseData = (customers) => {
 };
 
 const Customers = () => {
-  const { data: customers, isLoading } = useCustomers();
+  const { data: customers, isLoading, isError } = useCustomers();
   const [createCustomer] = useCreateCustomer();
 
   const columns = React.useMemo(
@@ -71,9 +76,11 @@ const Customers = () => {
   };
 
   return isLoading ? (
-    <span>Loading...</span>
+    <Loader />
+  ) : isError ? (
+    <Error />
   ) : (
-    <div className="container mx-auto">
+    <View>
       <div className="flex justify-between items-center">
         <Header title="Customers" />
         <button className="btn btn-blue" onClick={toggle}>
@@ -84,7 +91,7 @@ const Customers = () => {
         <CustomerForm onSubmit={handleSubmit} />
       </Modal>
       <DataTable columns={columns} data={data} />
-    </div>
+    </View>
   );
 };
 

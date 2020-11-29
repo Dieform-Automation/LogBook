@@ -1,22 +1,27 @@
 import React from 'react';
 
 import useModal from '../hooks/useModal';
-import DataTable from '../components/DataTable';
-import Header from '../components/Header';
-import Modal from '../components/Modal';
-import PartForm from '../components/PartForm';
 import useCreatePart from '../hooks/useCreatePart';
 import useParts from '../hooks/useParts';
+
+import DataTable from '../components/DataTable';
+import Modal from '../components/Modal';
+import PartForm from '../components/PartForm';
+
+import Header from '../elements/Header';
+import Loader from '../elements/Loader';
+import Error from '../elements/Error';
+import View from '../elements/View';
 
 const parseData = (parts) => {
   if (parts) {
     return parts.map((p) => {
       return {
-        ...p,
-        customer: p.customer_id,
+        data: p,
+        customer: p.customer,
         name: p.name,
         number: p.number,
-        purchase_order: p.purchase_order_id,
+        purchase_order: p.purchase_order,
       };
     });
   } else {
@@ -25,7 +30,7 @@ const parseData = (parts) => {
 };
 
 const Parts = () => {
-  const { data: parts, isLoading } = useParts();
+  const { data: parts, isLoading, isError } = useParts();
   const [createPart] = useCreatePart();
 
   const columns = React.useMemo(
@@ -65,9 +70,11 @@ const Parts = () => {
   };
 
   return isLoading ? (
-    <span>Loading...</span>
+    <Loader />
+  ) : isError ? (
+    <Error />
   ) : (
-    <div className="container mx-auto">
+    <View>
       <div className="flex justify-between items-center">
         <Header title="Parts" />
         <button className="btn btn-blue" onClick={toggle}>
@@ -78,7 +85,7 @@ const Parts = () => {
         <PartForm onSubmit={handleSubmit} />
       </Modal>
       <DataTable columns={columns} data={data} />
-    </div>
+    </View>
   );
 };
 

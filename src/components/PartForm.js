@@ -6,48 +6,31 @@ import PropTypes from 'prop-types';
 import useCustomers from '../hooks/useCustomers';
 import usePurchaseOrders from '../hooks/usePurchaseOrders';
 import useCreatePO from '../hooks/useCreatePO';
+import useMapToOptions from '../hooks/useMapToOptions';
 import Dropdown from '../elements/Dropdown';
 import CreatableDropdown from '../elements/CreatableDropdown';
 import TextInput from '../elements/TextInput';
-
-const mapCustomersToOptions = (customers) => {
-  if (customers) {
-    return customers.map((c) => ({
-      label: c.name,
-      value: c.id,
-      data: c,
-    }));
-  }
-  return [];
-};
-
-const mapPurchaseOrderToOptions = (purchaseOrders) => {
-  if (purchaseOrders) {
-    return purchaseOrders.map((order) => ({
-      label: order.number,
-      value: order.id,
-      data: order,
-    }));
-  }
-  return [];
-};
+import Loader from '../elements/Loader';
+import Error from '../elements/Error';
 
 const PartForm = ({ onSubmit }) => {
-  const { data: customers, isLoading } = useCustomers();
+  const { data: customers, isLoading, isError } = useCustomers();
   const { data: purchaseOrders } = usePurchaseOrders();
   const [createPO] = useCreatePO();
 
-  const customerOptions = React.useMemo(() => mapCustomersToOptions(customers), [
+  const customerOptions = React.useMemo(() => useMapToOptions(customers, 'id', 'name'), [
     customers,
   ]);
 
   const purchaseOrderOptions = React.useMemo(
-    () => mapPurchaseOrderToOptions(purchaseOrders),
+    () => useMapToOptions(purchaseOrders, 'id', 'number'),
     [purchaseOrders]
   );
 
   return isLoading ? (
-    <span>Loading...</span>
+    <Loader />
+  ) : isError ? (
+    <Error />
   ) : (
     <Formik
       initialValues={{
@@ -85,7 +68,7 @@ const PartForm = ({ onSubmit }) => {
             }}
             resetOnChange={values.customer_id}
           />
-          <div className="flex flex-wrap -mx-3 items-end">
+          <div className="flex flex-wrap -mx-3 items-end space-y-4 md:space-y-0">
             <TextInput label="Part Name" name="name" type="text" inline />
             <TextInput label="Part Number" name="number" type="text" inline />
           </div>
