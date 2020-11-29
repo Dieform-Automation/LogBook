@@ -12,11 +12,11 @@ const parseData = (parts) => {
   if (parts) {
     return parts.map((p) => {
       return {
-        ...p,
-        customer: p.customer_id,
+        data: p,
+        customer: p.customer,
         name: p.name,
         number: p.number,
-        purchase_order: p.purchase_order_id,
+        purchase_order: p.purchase_order,
       };
     });
   } else {
