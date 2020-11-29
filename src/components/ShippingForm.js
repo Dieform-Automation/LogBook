@@ -32,9 +32,7 @@ const shipmentSchema = Yup.object().shape({
   customer_id: Yup.string()
     .matches(/^[0-9]*$/)
     .required('Customer is required'),
-  date: Yup.string()
-    .default(() => new Date())
-    .required('Date is required'),
+  date: Yup.string().required('Date is required'),
 });
 
 const ShippingForm = () => {
