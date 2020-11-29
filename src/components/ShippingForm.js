@@ -60,13 +60,16 @@ const ShippingForm = () => {
           shipmentSchema
             .validate(values)
             .then((payload) => {
+              // Validation Successful
               createShipment(payload, {
                 onSuccess: () => {
+                  // API Request Successful
                   actions.resetForm();
                   resetPartList();
                   toast.success('Shipment created');
                 },
                 onError: (err) => {
+                  // API Request Failed
                   console.log(err);
                   toast.error('Failed to create shipment');
                 },
@@ -74,6 +77,7 @@ const ShippingForm = () => {
               console.log(payload);
             })
             .catch((err) => {
+              // Validation Failed
               console.log(err.errors);
               toast.error(err.errors[0]);
             });
