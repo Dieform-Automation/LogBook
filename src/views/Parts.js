@@ -1,12 +1,16 @@
 import React from 'react';
 
 import useModal from '../hooks/useModal';
-import DataTable from '../components/DataTable';
-import Header from '../elements/Header';
-import Modal from '../components/Modal';
-import PartForm from '../components/PartForm';
 import useCreatePart from '../hooks/useCreatePart';
 import useParts from '../hooks/useParts';
+
+import DataTable from '../components/DataTable';
+import Modal from '../components/Modal';
+import PartForm from '../components/PartForm';
+
+import Header from '../elements/Header';
+import Loader from '../elements/Loader';
+import Error from '../elements/Error';
 
 const parseData = (parts) => {
   if (parts) {
@@ -25,7 +29,7 @@ const parseData = (parts) => {
 };
 
 const Parts = () => {
-  const { data: parts, isLoading } = useParts();
+  const { data: parts, isLoading, isError } = useParts();
   const [createPart] = useCreatePart();
 
   const columns = React.useMemo(
@@ -65,7 +69,9 @@ const Parts = () => {
   };
 
   return isLoading ? (
-    <span>Loading...</span>
+    <Loader />
+  ) : isError ? (
+    <Error />
   ) : (
     <>
       <div className="flex justify-between items-center">
