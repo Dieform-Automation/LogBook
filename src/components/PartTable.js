@@ -21,9 +21,7 @@ const PartTableSchema = Yup.object().shape({
   quantity: Yup.string()
     .matches(/^[0-9]*$/, 'Quantity must be a number')
     .required('Quantity is required'),
-  part_id: Yup.string()
-    .matches(/^[0-9]*$/)
-    .required('Part Number is required'),
+  part_id: Yup.number().required('Part Number is required'),
 });
 
 const PartTable = ({ customerId }) => {
@@ -39,9 +37,8 @@ const PartTable = ({ customerId }) => {
     PartTableSchema.validate(formValues)
       .then((value) => {
         const part = {
-          partNumber: partOptions.find((opt) => opt.value === Number(value.part_id))
-            .label,
-          part_id: Number(value.part_id),
+          partNumber: partOptions.find((opt) => opt.value === value.part_id).label,
+          part_id: value.part_id,
           quantity: Number(value.quantity),
           bins: Number(value.bins),
         };
@@ -60,14 +57,16 @@ const PartTable = ({ customerId }) => {
     <Error />
   ) : (
     <>
-      <Formik initialValues={{ part_id: '', quantity: '', bins: '' }}>
+      <Formik
+        initialValues={{ part_id: undefined, quantity: undefined, bins: undefined }}
+      >
         {({ values, resetForm }) => (
           <div className="flex flex-wrap -mx-3 items-end space-y-4 md:space-y-0">
             <Dropdown
               label="Part Number"
               name="part_id"
               options={partOptions}
-              resetOnChange={partList}
+              resetOnChange={customerId}
               inline
             />
             <TextInput label="Quantity" name="quantity" inline data-testid="quantity" />
@@ -76,7 +75,7 @@ const PartTable = ({ customerId }) => {
               <button
                 className={`${
                   isShipping ? 'btn-green' : 'btn-blue'
-                } btn uppercase font-bold w-full max-w-screen-md whitespace-no-wrap`}
+                } btn uppercase font-bold w-full whitespace-no-wrap`}
                 type="button"
                 data-testid="add-part-btn"
                 onClick={() => handleSubmit(values, resetForm)}

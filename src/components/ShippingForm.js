@@ -29,9 +29,7 @@ const shippingOptions = [
 const shipmentSchema = Yup.object().shape({
   shipped_parts: Yup.array().min(1, 'At least one part is required').required(),
   shipping_method: Yup.string().required('Shipping Method is required'),
-  customer_id: Yup.string()
-    .matches(/^[0-9]*$/)
-    .required('Customer is required'),
+  customer_id: Yup.number().required('Customer is required'),
   date: Yup.string().required('Date is required'),
 });
 
@@ -51,7 +49,7 @@ const ShippingForm = () => {
     <div className="w-full shadow p-8 bg-white rounded-lg ">
       <Formik
         initialValues={{
-          customer_id: '',
+          customer_id: undefined,
           date: '',
           shipping_method: '',
         }}
@@ -93,7 +91,7 @@ const ShippingForm = () => {
               name="shipping_method"
               options={shippingOptions}
             />
-            {values.customer_id !== '' ? (
+            {values.customer_id !== undefined ? (
               <PartTable customerId={values.customer_id} />
             ) : null}
             <button className="btn btn-green uppercase font-bold w-full" type="submit">
