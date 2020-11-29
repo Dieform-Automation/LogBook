@@ -1,12 +1,16 @@
 import React from 'react';
-import CustomerForm from '../components/CustomerForm';
-import DataTable from '../components/DataTable';
-import Header from '../elements/Header';
-import Modal from '../components/Modal';
-import useCustomers from '../hooks/useCustomers';
-import useCreateCustomer from '../hooks/useCreateCustomer';
 
 import useModal from '../hooks/useModal';
+import useCreateCustomer from '../hooks/useCreateCustomer';
+import useCustomers from '../hooks/useCustomers';
+
+import CustomerForm from '../components/CustomerForm';
+import DataTable from '../components/DataTable';
+import Modal from '../components/Modal';
+
+import Header from '../elements/Header';
+import Loader from '../elements/Loader';
+import Error from '../elements/Error';
 
 const parseData = (customers) => {
   if (customers) {
@@ -26,7 +30,7 @@ const parseData = (customers) => {
 };
 
 const Customers = () => {
-  const { data: customers, isLoading } = useCustomers();
+  const { data: customers, isLoading, isError } = useCustomers();
   const [createCustomer] = useCreateCustomer();
 
   const columns = React.useMemo(
@@ -71,7 +75,9 @@ const Customers = () => {
   };
 
   return isLoading ? (
-    <span>Loading...</span>
+    <Loader />
+  ) : isError ? (
+    <Error />
   ) : (
     <>
       <div className="flex justify-between items-center">
