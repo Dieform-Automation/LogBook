@@ -11,6 +11,7 @@ import Modal from '../components/Modal';
 import Header from '../elements/Header';
 import Loader from '../elements/Loader';
 import Error from '../elements/Error';
+import View from '../elements/View';
 
 const parseData = (customers) => {
   if (customers) {
@@ -79,7 +80,7 @@ const Customers = () => {
   ) : isError ? (
     <Error />
   ) : (
-    <>
+    <View>
       <div className="flex justify-between items-center">
         <Header title="Customers" />
         <button className="btn btn-blue" onClick={toggle}>
@@ -90,7 +91,7 @@ const Customers = () => {
         <CustomerForm onSubmit={handleSubmit} />
       </Modal>
       <DataTable columns={columns} data={data} />
-    </>
+    </View>
   );
 };
 

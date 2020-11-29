@@ -1,11 +1,14 @@
 import React from 'react';
 
 import useShipments from '../hooks/useShipments';
+
 import ShippingForm from '../components/ShippingForm';
 import DataTable from '../components/DataTable';
+
 import Header from '../elements/Header';
 import Loader from '../elements/Loader';
 import Error from '../elements/Error';
+import View from '../elements/View';
 
 const parseData = (shipments) => {
   if (shipments) {
@@ -72,13 +75,13 @@ const Shipping = () => {
   ) : isError ? (
     <Error />
   ) : (
-    <>
+    <View>
       <Header title="Shipping" />
       <ShippingForm />
       <div className="py-4">
         <DataTable columns={columns} data={data} />
       </div>
-    </>
+    </View>
   );
 };
 
