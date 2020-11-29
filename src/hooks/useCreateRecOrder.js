@@ -12,7 +12,7 @@ export default function useCreateRecOrder() {
       return data;
     },
     {
-      onSuccess: () => cache.invalidateQueries('receiving_orders'),
+      onSuccess: () => cache.invalidateQueries('receivingOrders'),
     }
   );
 }
