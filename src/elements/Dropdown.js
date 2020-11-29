@@ -5,14 +5,17 @@ import PropTypes from 'prop-types';
 
 const Dropdown = ({ label, name, options, resetOnChange, inline }) => {
   const [selectedOption, setSelectedOption] = React.useState();
+
+  // The second comma is used to skip the second element of the array
+  // It is NOT A TYPO
   const [field, , helpers] = useField(name);
 
   React.useEffect(() => {
-    helpers.setValue('');
+    helpers.setValue(undefined);
   }, [resetOnChange]);
 
   React.useEffect(() => {
-    if (field.value === '') {
+    if (field.value === undefined) {
       setSelectedOption(null);
     }
   }, [field]);
@@ -28,7 +31,7 @@ const Dropdown = ({ label, name, options, resetOnChange, inline }) => {
         break;
       case 'clear':
         setSelectedOption(null);
-        helpers.setValue('');
+        helpers.setValue(undefined);
         helpers.setError(undefined);
         break;
       default:
