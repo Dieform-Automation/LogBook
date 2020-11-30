@@ -1,123 +1,95 @@
-import React, { useState } from 'react';
-import Select from 'react-select';
-import useField from '../hooks/useField';
-import useGlobalState from '../hooks/useGlobalState';
-import useCustomers from '../hooks/useCustomers';
+import React from 'react';
+import { Form, Formik } from 'formik';
+import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
-import PartTable from './PartTable';
+import useCustomers from '../hooks/useCustomers';
+import useMapToOptions from '../hooks/useMapToOptions';
+import usePartTable from '../hooks/usePartTable';
 import useCreateRecOrder from '../hooks/useCreateRecOrder';
 
-const ReceivingForm = () => {
-  const [selectedCustomer, setSelectedCustomer] = useState();
-  const customerPackingSlip = useField('text');
-  const date = useField('date');
+import PartTable from './PartTable';
 
-  const [receivedParts, resetRecParts] = useGlobalState((state) => [
-    state.receivedParts,
-    state.resetRecParts,
+import Loader from '../elements/Loader';
+import TextInput from '../elements/TextInput';
+import Dropdown from '../elements/Dropdown';
+import Error from '../elements/Error';
+
+const receivingSchema = Yup.object().shape({
+  received_parts: Yup.array().min(1, 'At least one part is required').required(),
+  customer_packing_slip: Yup.string().required('Customer Packing Slip is required'),
+  customer_id: Yup.number().required('Customer is required'),
+  date: Yup.string().required('Date is required'),
+});
+
+const ReceivingForm = () => {
+  const { partList, resetPartList } = usePartTable();
+  const { data: customers, isLoading, isError } = useCustomers();
+  const [createRecOrder] = useCreateRecOrder();
+  const customerOptions = React.useMemo(() => useMapToOptions(customers, 'id', 'name'), [
+    customers,
   ]);
 
-  const customersQuery = useCustomers();
-  const [createRecOrder] = useCreateRecOrder();
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    const payload = {
-      customer_id: selectedCustomer.value,
-      customer_packing_slip: customerPackingSlip.fields.value,
-      date: date.fields.value,
-      received_parts: receivedParts.map((part) => {
-        return {
-          part_id: part.id,
-          part_quantity: part.quantity,
-          bins: part.bins,
-        };
-      }),
-    };
-    console.log(payload);
-    createRecOrder(payload, {
-      onSuccess: () => {
-        customerPackingSlip.reset();
-        resetRecParts();
-      },
-      onError: (err) => {
-        console.log(err);
-        alert(err.message);
-      },
-    });
-  };
-
-  return (
-    <section>
-      {customersQuery.isLoading ? (
-        <span>Loading...</span>
-      ) : (
-        <div className="shadow-md w-full bg-white rounded-lg">
-          <form className="px-8 py-6" onSubmit={onSubmit}>
-            {/* Date */}
-            <div className="mb-4">
-              <label className="form-label" htmlFor="date">
-                Date
-              </label>
-              <input
-                className="form-input"
-                {...date.fields}
-                name="date"
-                id="date"
-                data-testid="date"
-                required
-              />
-            </div>
-            {/* Customer Select */}
-            <div className="mb-4">
-              <label className="form-label" htmlFor="customer">
-                Customer
-              </label>
-              <Select
-                options={customersQuery.data.map((c) => ({ value: c.id, label: c.name }))}
-                onChange={(option) => {
-                  let shouldChange = true;
-                  if (receivedParts.length > 0) {
-                    shouldChange = confirm(
-                      'Changing customers will remove existing part entries. Are you sure?'
-                    );
-                  }
-                  if (shouldChange) {
-                    resetRecParts();
-                    setSelectedCustomer(option);
-                  }
-                }}
-              />
-            </div>
-            {/* Customer Packing Slip */}
-            <div className="mb-4">
-              <label className="form-label" htmlFor="customer-packing-slip">
-                Customer Packing Slip
-              </label>
-              <input
-                data-testid="packing-slip"
-                className="form-input"
-                {...customerPackingSlip.fields}
-                name="customer-packing-slip"
-                id="customer-packing-slip"
-                placeholder="17896438"
-                required
-              />
-            </div>
-            {selectedCustomer && <PartTable customerId={selectedCustomer.value} />}
-            {/* Submit Button */}
-            <div className="flex justify-center">
-              <button
-                className="btn btn-blue uppercase font-bold w-full max-w-screen-md"
-                type="submit"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-    </section>
+  return isLoading ? (
+    <Loader />
+  ) : isError ? (
+    <Error />
+  ) : (
+    <div className="w-full shadow p-8 bg-white rounded-lg ">
+      <Formik
+        initialValues={{
+          customer_id: undefined,
+          date: '',
+          customer_packing_slip: '',
+        }}
+        onSubmit={(values, actions) => {
+          values.received_parts = partList;
+          receivingSchema
+            .validate(values)
+            .then((payload) => {
+              // Validation Successful
+              createRecOrder(payload, {
+                onSuccess: () => {
+                  // API Request Successful
+                  actions.resetForm();
+                  resetPartList();
+                  toast.success('Receiving order submitted');
+                },
+                onError: (err) => {
+                  // API Request Failed
+                  console.log(err);
+                  toast.error('Failed to create receiving order');
+                },
+              });
+            })
+            .catch((err) => {
+              // Validation Failed
+              console.log(err.errors);
+              toast.error(err.errors[0]);
+            });
+          // alert(JSON.stringify(values, null, 2));
+          actions.setSubmitting(false);
+        }}
+      >
+        {({ values }) => (
+          <Form className="space-y-4">
+            <TextInput label="Date" name="date" type="date" />
+            <Dropdown label="Customer" name="customer_id" options={customerOptions} />
+            <TextInput
+              label="Customer Packing Slip"
+              name="customer_packing_slip"
+              type="text"
+            />
+            {values.customer_id !== undefined ? (
+              <PartTable customerId={values.customer_id} />
+            ) : null}
+            <button className="btn btn-blue uppercase font-bold w-full" type="submit">
+              Submit
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 };
 
