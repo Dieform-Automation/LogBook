@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 
 import useCustomers from '../hooks/useCustomers';
 import usePurchaseOrders from '../hooks/usePurchaseOrders';
@@ -13,6 +14,13 @@ import CreatableDropdown from '../elements/CreatableDropdown';
 import TextInput from '../elements/TextInput';
 import Loader from '../elements/Loader';
 import Error from '../elements/Error';
+
+const partSchema = Yup.object().shape({
+  number: Yup.string().required('Part Number is required'),
+  name: Yup.string().required('Part Name is required'),
+  purchase_order_id: Yup.number().required('Purchase Order is required'),
+  customer_id: Yup.number().required('Customer is required'),
+});
 
 const PartForm = ({ onSubmit }) => {
   const { data: customers, isLoading, isError } = useCustomers();
@@ -41,7 +49,15 @@ const PartForm = ({ onSubmit }) => {
         name: '',
       }}
       onSubmit={(values, actions) => {
-        onSubmit(values);
+        partSchema
+          .validate(values)
+          .then((payload) => {
+            onSubmit(payload);
+          })
+          .catch((err) => {
+            console.log(err.errors);
+            toast.error(err.errors[0]);
+          });
         actions.setSubmitting(false);
       }}
     >
