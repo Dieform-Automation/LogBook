@@ -3,12 +3,12 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { ReactQueryCacheProvider, QueryCache } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 
-import ReceivingForm from './components/ReceivingForm';
 import Layout from './components/Layout';
 import Landing from './views/Landing';
 import Customers from './views/Customers';
 import Parts from './views/Parts';
 import Shipping from './views/Shipping';
+import Receiving from './views/Receiving';
 
 const queryCache = new QueryCache();
 
@@ -17,7 +17,7 @@ const App = () => {
     <ReactQueryCacheProvider queryCache={queryCache}>
       <Layout>
         <Switch>
-          <Route path="/receiving" component={ReceivingForm} />
+          <Route path="/receiving" component={Receiving} />
           <Route path="/shipping" component={Shipping} />
           <Route path="/customers" component={Customers} />
           <Route path="/parts" component={Parts} />
