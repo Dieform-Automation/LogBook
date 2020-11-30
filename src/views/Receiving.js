@@ -2,6 +2,7 @@ import React from 'react';
 
 import useRecOrders from '../hooks/useRecOrders';
 
+import ReceivingForm from '../components/ReceivingForm';
 import DataTable from '../components/DataTable';
 
 import Header from '../elements/Header';
@@ -17,7 +18,7 @@ const parseData = (recOrders) => {
         date: new Date(date).toLocaleDateString(),
         customer: customer,
         part_number: part.part_number,
-        quantity: part.part_quantity,
+        quantity: part.quantity,
         bins: part.bins,
         data: received,
       }));
@@ -66,6 +67,7 @@ const Receiving = () => {
   ) : (
     <View>
       <Header title="Receiving" />
+      <ReceivingForm />
       <div className="py-4">
         <DataTable columns={columns} data={data} />
       </div>
