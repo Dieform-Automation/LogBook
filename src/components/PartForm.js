@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
-import PropTypes from 'prop-types';
 
 import useCustomers from '../hooks/useCustomers';
 import usePurchaseOrders from '../hooks/usePurchaseOrders';
 import useCreatePO from '../hooks/useCreatePO';
 import useMapToOptions from '../hooks/useMapToOptions';
+
 import Dropdown from '../elements/Dropdown';
 import CreatableDropdown from '../elements/CreatableDropdown';
 import TextInput from '../elements/TextInput';
@@ -34,8 +35,8 @@ const PartForm = ({ onSubmit }) => {
   ) : (
     <Formik
       initialValues={{
-        customer_id: '',
-        purchase_order_id: '',
+        customer_id: undefined,
+        purchase_order_id: undefined,
         number: '',
         name: '',
       }}
@@ -48,22 +49,31 @@ const PartForm = ({ onSubmit }) => {
         <Form className="p-4 space-y-4">
           <Dropdown label="Customer" name="customer_id" options={customerOptions} />
           <CreatableDropdown
-            isDisabled={values.customer_id === ''}
+            isDisabled={values.customer_id === undefined}
             label="Purchase Order"
             name="purchase_order_id"
             options={purchaseOrderOptions.filter((option) => {
               return option.data.customer_id === values.customer_id;
             })}
-            onCreate={(option) => {
-              const payload = {
-                customer_id: values.customer_id,
-                number: Number(option),
-              };
-              createPO(payload, {
-                onError: (err) => {
-                  toast.error('Failed to create purchase order');
-                  console.error(err);
-                },
+            createOption={(option) => {
+              return new Promise((resolve, reject) => {
+                const payload = {
+                  customer_id: values.customer_id,
+                  number: Number(option),
+                };
+                createPO(payload, {
+                  onSuccess: (data) => {
+                    const newOption = { label: data.number, value: data.id, data: data };
+                    resolve(newOption);
+                    console.log(data);
+                    toast.success(`Created PO`);
+                  },
+                  onError: (err) => {
+                    reject(err);
+                    console.error(err);
+                    toast.error('Failed to create purchase order');
+                  },
+                });
               });
             }}
             resetOnChange={values.customer_id}
