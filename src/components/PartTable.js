@@ -57,9 +57,7 @@ const PartTable = ({ customerId }) => {
     <Error />
   ) : (
     <>
-      <Formik
-        initialValues={{ part_id: undefined, quantity: undefined, bins: undefined }}
-      >
+      <Formik initialValues={{ part_id: undefined, quantity: '', bins: '' }}>
         {({ values, resetForm }) => (
           <div className="flex flex-wrap -mx-3 items-end space-y-4 md:space-y-0">
             <Dropdown
