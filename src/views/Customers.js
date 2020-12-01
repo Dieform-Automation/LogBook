@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 
 import useModal from '../hooks/useModal';
 import useCreateCustomer from '../hooks/useCreateCustomer';
@@ -67,10 +68,11 @@ const Customers = () => {
     createCustomer(payload, {
       onSuccess: () => {
         toggle();
+        toast.success('Customer created');
       },
       onError: (err) => {
         console.log(err);
-        alert(err.message);
+        toast.error('Failed to create customer');
       },
     });
   };
