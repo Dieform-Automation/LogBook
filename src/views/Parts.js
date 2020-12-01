@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 
 import useModal from '../hooks/useModal';
 import useCreatePart from '../hooks/useCreatePart';
@@ -61,10 +62,11 @@ const Parts = () => {
     createPart(payload, {
       onSuccess: () => {
         toggle();
+        toast.success('Part created');
       },
       onError: (err) => {
         console.log(err);
-        alert(err.message);
+        toast.error('Failed to create part');
       },
     });
   };

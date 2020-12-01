@@ -43,6 +43,7 @@ const Dropdown = ({ label, name, options, resetOnChange, inline }) => {
     <div className={inline ? 'w-full md:flex-1 px-3' : ''}>
       <label className="form-label" id={field.name} htmlFor={field.name}>
         {label}
+        <span className="text-red-600 text-lg">*</span>
       </label>
       <Select
         value={selectedOption}
