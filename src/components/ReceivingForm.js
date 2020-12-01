@@ -67,7 +67,6 @@ const ReceivingForm = () => {
               console.log(err.errors);
               toast.error(err.errors[0]);
             });
-          // alert(JSON.stringify(values, null, 2));
           actions.setSubmitting(false);
         }}
       >
@@ -79,6 +78,7 @@ const ReceivingForm = () => {
               label="Customer Packing Slip"
               name="customer_packing_slip"
               type="text"
+              placeholder="73648264"
             />
             {values.customer_id !== undefined ? (
               <PartTable customerId={values.customer_id} />
