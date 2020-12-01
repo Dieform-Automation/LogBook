@@ -1,10 +1,13 @@
 import React from 'react';
 import Proptypes from 'prop-types';
-import { usePagination, useTable } from 'react-table';
+import { usePagination, useSortBy, useTable } from 'react-table';
+
+import Chevron from '../assets/chevron.svg';
 
 const DataTable = ({ columns, data }) => {
   const tableInstance = useTable(
     { columns, data, initialState: { pageIndex: 0, pageSize: 5 } },
+    useSortBy,
     usePagination
   );
   const {
@@ -40,12 +43,26 @@ const DataTable = ({ columns, data }) => {
                       <th
                         className="px-5 py-3 border-b-2 border-gray-200 bg-gray-900 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider"
                         key={key}
-                        {...column.getHeaderProps()}
+                        // Add the sorting props to control sorting
+                        {...column.getHeaderProps(column.getSortByToggleProps())}
                       >
                         {
                           // Render the header
                           column.render('Header')
                         }
+                        {/* Add a sort direction indicator */}
+                        <span>
+                          {' '}
+                          {column.isSorted ? (
+                            column.isSortedDesc ? (
+                              <Chevron className="transform rotate-180 inline w-4 h-4" />
+                            ) : (
+                              <Chevron className="inline w-4 h-4" />
+                            )
+                          ) : (
+                            ''
+                          )}
+                        </span>
                       </th>
                     ))
                   }
