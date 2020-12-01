@@ -1,12 +1,49 @@
 import React from 'react';
-import Proptypes from 'prop-types';
-import { usePagination, useSortBy, useTable } from 'react-table';
+import PropTypes from 'prop-types';
+import {
+  useAsyncDebounce,
+  useGlobalFilter,
+  usePagination,
+  useSortBy,
+  useTable,
+} from 'react-table';
 
 import Chevron from '../assets/chevron.svg';
+import Search from '../assets/search.svg';
+
+const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) => {
+  const count = preGlobalFilteredRows.length;
+  const [value, setValue] = React.useState(globalFilter);
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 100);
+
+  return (
+    <div className="flex space-x-2 items-center">
+      <Search className="h-6 w-6" />
+      <input
+        className="form-input"
+        value={value || ''}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder={`Search ${count} records...`}
+      />
+    </div>
+  );
+};
+
+GlobalFilter.propTypes = {
+  preGlobalFilteredRows: PropTypes.array,
+  globalFilter: PropTypes.any,
+  setGlobalFilter: PropTypes.func,
+};
 
 const DataTable = ({ columns, data }) => {
   const tableInstance = useTable(
     { columns, data, initialState: { pageIndex: 0, pageSize: 5 } },
+    useGlobalFilter,
     useSortBy,
     usePagination
   );
@@ -22,11 +59,19 @@ const DataTable = ({ columns, data }) => {
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize },
+    preGlobalFilteredRows,
+    setGlobalFilter,
+    state: { pageIndex, pageSize, globalFilter },
   } = tableInstance;
 
   return (
-    <div className="-mx-4 sm:-mx-6 px-4 sm:px-6 py-4 overflow-x-auto">
+    <div className="-mx-4 sm:-mx-6 px-4 sm:px-6 py-4 overflow-x-auto space-y-4">
+      <GlobalFilter
+        preGlobalFilteredRows={preGlobalFilteredRows}
+        globalFilter={globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
+
       <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
         {/* Apply the table props */}
         <table className="min-w-full leading-normal" {...getTableProps()}>
@@ -147,8 +192,8 @@ const DataTable = ({ columns, data }) => {
 };
 
 DataTable.propTypes = {
-  columns: Proptypes.array,
-  data: Proptypes.array,
+  columns: PropTypes.array,
+  data: PropTypes.array,
 };
 
 export default DataTable;
