@@ -1,15 +1,25 @@
 import React from 'react';
 import Proptypes from 'prop-types';
-import { useTable } from 'react-table';
+import { usePagination, useTable } from 'react-table';
 
 const DataTable = ({ columns, data }) => {
-  const tableInstance = useTable({ columns, data });
+  const tableInstance = useTable(
+    { columns, data, initialState: { pageIndex: 0, pageSize: 5 } },
+    usePagination
+  );
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
   } = tableInstance;
 
   return (
@@ -47,7 +57,7 @@ const DataTable = ({ columns, data }) => {
           <tbody {...getTableBodyProps()}>
             {
               // Loop over the table rows
-              rows.map((row, key) => {
+              page.map((row, key) => {
                 // Prepare the row for display
                 prepareRow(row);
                 return (
@@ -77,6 +87,43 @@ const DataTable = ({ columns, data }) => {
             }
           </tbody>
         </table>
+        <div className="py-1 bg-white flex justify-evenly items-center">
+          <p>
+            Page{' '}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>
+          </p>
+          <div className="flex list-none rounded my-2">
+            <button
+              className="outline-none relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 border-r-0 rounded-l hover:bg-gray-200 disabled:opacity-50"
+              onClick={() => previousPage()}
+              disabled={!canPreviousPage}
+            >
+              Prev
+            </button>
+            <button
+              className="outline-none relative block py-2 px-3 leading-tight bg-white border border-gray-300 text-blue-700 rounded-r hover:bg-gray-200 disabled:opacity-50"
+              onClick={() => nextPage()}
+              disabled={!canNextPage}
+            >
+              Next
+            </button>
+          </div>
+          <select
+            className="outline-none relative block p-1 leading-tight bg-white border border-gray-300 rounded"
+            value={pageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+            }}
+          >
+            {[5, 10, 15, 20, 25].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   );

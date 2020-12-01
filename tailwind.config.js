@@ -18,6 +18,8 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    opacity: ['disabled'],
+  },
   plugins: [],
 };
