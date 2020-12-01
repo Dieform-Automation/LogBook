@@ -95,8 +95,20 @@ const PartForm = ({ onSubmit }) => {
             resetOnChange={values.customer_id}
           />
           <div className="flex flex-wrap -mx-3 items-end space-y-4 md:space-y-0">
-            <TextInput label="Part Name" name="name" type="text" inline />
-            <TextInput label="Part Number" name="number" type="text" inline />
+            <TextInput
+              label="Part Name"
+              name="name"
+              type="text"
+              placeholder="Rear Axle Mount"
+              inline
+            />
+            <TextInput
+              label="Part Number"
+              name="number"
+              type="text"
+              placeholder="875-93A"
+              inline
+            />
           </div>
           <button className="btn btn-blue uppercase font-bold w-full" type="submit">
             Submit
