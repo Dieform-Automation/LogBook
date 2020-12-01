@@ -58,6 +58,7 @@ const CreatableDropdown = ({
     <>
       <label className="form-label" id={field.name} htmlFor={field.name}>
         {label}
+        <span className="text-red-600 text-lg">*</span>
       </label>
       <CreatableSelect
         value={selectedOption}

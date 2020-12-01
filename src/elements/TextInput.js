@@ -9,6 +9,7 @@ const TextInput = ({ label, inline, ...props }) => {
     <div className={inline ? 'w-full md:flex-1 px-3' : ''}>
       <label className="form-label" id={field.name} htmlFor={field.name}>
         {label}
+        <span className="text-red-600 text-lg">*</span>
       </label>
       <input className="form-input" aria-labelledby={field.name} {...field} {...props} />
     </div>
