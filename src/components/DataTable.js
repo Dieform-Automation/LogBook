@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   useAsyncDebounce,
+  useExpanded,
   useGlobalFilter,
   usePagination,
   useSortBy,
   useTable,
 } from 'react-table';
 
-import Chevron from '../assets/chevron.svg';
+import DownChevron from '../assets/chevron-down.svg';
 import Search from '../assets/search.svg';
 
 const GlobalFilter = ({ preGlobalFilteredRows, globalFilter, setGlobalFilter }) => {
@@ -40,11 +41,12 @@ GlobalFilter.propTypes = {
   setGlobalFilter: PropTypes.func,
 };
 
-const DataTable = ({ columns, data }) => {
+const DataTable = ({ columns, data, renderRowSubComponent }) => {
   const tableInstance = useTable(
-    { columns, data, initialState: { pageIndex: 0, pageSize: 5 } },
+    { columns, data, initialState: { pageIndex: 0, pageSize: 10 } },
     useGlobalFilter,
     useSortBy,
+    useExpanded,
     usePagination
   );
   const {
@@ -59,6 +61,7 @@ const DataTable = ({ columns, data }) => {
     nextPage,
     previousPage,
     setPageSize,
+    visibleColumns,
     preGlobalFilteredRows,
     setGlobalFilter,
     state: { pageIndex, pageSize, globalFilter },
@@ -74,7 +77,10 @@ const DataTable = ({ columns, data }) => {
 
       <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
         {/* Apply the table props */}
-        <table className="min-w-full leading-normal" {...getTableProps()}>
+        <table
+          className="table-auto text-center min-w-full leading-normal"
+          {...getTableProps()}
+        >
           <thead>
             {
               // Loop over the header rows
@@ -86,7 +92,7 @@ const DataTable = ({ columns, data }) => {
                     headerGroup.headers.map((column, key) => (
                       // Apply the header cell props
                       <th
-                        className="px-5 py-3 border-b-2 border-gray-200 bg-gray-900 text-left text-xs font-semibold text-gray-100 uppercase tracking-wider"
+                        className="px-5 py-3 border-b-2 border-gray-200 bg-gray-900 text-xs font-semibold text-gray-100 uppercase tracking-wider"
                         key={key}
                         // Add the sorting props to control sorting
                         {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -100,9 +106,9 @@ const DataTable = ({ columns, data }) => {
                           {' '}
                           {column.isSorted ? (
                             column.isSortedDesc ? (
-                              <Chevron className="transform rotate-180 inline w-4 h-4" />
+                              <DownChevron className="transform rotate-180 inline w-4 h-4" />
                             ) : (
-                              <Chevron className="inline w-4 h-4" />
+                              <DownChevron className="inline w-4 h-4" />
                             )
                           ) : (
                             ''
@@ -123,27 +129,43 @@ const DataTable = ({ columns, data }) => {
                 // Prepare the row for display
                 prepareRow(row);
                 return (
-                  // Apply the row props
-                  <tr key={key} {...row.getRowProps()}>
-                    {
-                      // Loop over the rows cells
-                      row.cells.map((cell, key) => {
-                        // Apply the cell props
-                        return (
-                          <td
-                            className="px-5 py-5 border-b border-gray-200 bg-white text-sm"
-                            key={key}
-                            {...cell.getCellProps()}
-                          >
-                            {
-                              // Render the cell contents
-                              cell.render('Cell')
-                            }
-                          </td>
-                        );
-                      })
-                    }
-                  </tr>
+                  <React.Fragment key={key}>
+                    {/* Apply the row props */}
+                    <tr {...row.getRowProps()}>
+                      {
+                        // Loop over the rows cells
+                        row.cells.map((cell, key) => {
+                          // Apply the cell props
+                          return (
+                            <td
+                              className="px-5 py-5 border-b border-gray-200 bg-white text-sm"
+                              key={key}
+                              {...cell.getCellProps()}
+                            >
+                              {
+                                // Render the cell contents
+                                cell.render('Cell')
+                              }
+                            </td>
+                          );
+                        })
+                      }
+                    </tr>
+                    {row.isExpanded ? (
+                      <tr>
+                        <td className="text-left" colSpan={visibleColumns.length}>
+                          {/*
+                            Inside it, call our renderRowSubComponent function. In reality,
+                            you could pass whatever you want as props to
+                            a component like this, including the entire
+                            table instance. But for this example, we'll just
+                            pass the row
+                          */}
+                          {renderRowSubComponent({ row })}
+                        </td>
+                      </tr>
+                    ) : null}
+                  </React.Fragment>
                 );
               })
             }
@@ -179,7 +201,7 @@ const DataTable = ({ columns, data }) => {
               setPageSize(Number(e.target.value));
             }}
           >
-            {[5, 10, 15, 20, 25].map((pageSize) => (
+            {[10, 20, 30, 40, 50].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize}
               </option>
@@ -194,6 +216,7 @@ const DataTable = ({ columns, data }) => {
 DataTable.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array,
+  renderRowSubComponent: PropTypes.func,
 };
 
 export default DataTable;
