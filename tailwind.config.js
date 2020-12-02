@@ -32,7 +32,8 @@ module.exports = {
     },
   },
   variants: {
-    opacity: ['disabled'],
+    opacity: ['responsive', 'hover', 'focus', 'disabled'],
+    textColor: ['responsive', 'hover', 'focus', 'group-hover'],
   },
   plugins: [],
 };
