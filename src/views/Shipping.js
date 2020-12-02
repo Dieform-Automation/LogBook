@@ -56,21 +56,29 @@ const Shipping = () => {
         accessor: 'customer',
       },
       {
-        Header: 'Packing Slip',
-        accessor: 'packing_slip',
-      },
-      {
         Header: 'Shipping Method',
         accessor: 'shipping_method',
       },
       {
-        id: 'download',
+        Header: 'Packing Slip',
+        accessor: 'packing_slip',
         Cell: ({ row }) => (
-          <Download
+          <div
             onClick={() => console.log(row.original)}
-            className="mx-auto cursor-pointer h-6 w-6 hover:text-green-500"
-          />
+            className="cursor-pointer flex space-x-4 justify-center items-center group"
+          >
+            <p className="group-hover:text-green-500">{row.values.packing_slip}</p>
+            <Download className="h-6 w-6 group-hover:text-green-500" />
+          </div>
         ),
+      },
+      {
+        id: 'parts',
+        accessor: (row) => {
+          const { shipped_parts } = row;
+          return shipped_parts.map((p) => p.part_number).join(' ');
+        },
+        Cell: () => null,
       },
     ],
     []
