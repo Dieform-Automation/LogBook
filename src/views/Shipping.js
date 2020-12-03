@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
 import React from 'react';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 import useShipments from '../hooks/useShipments';
 
 import ShippingForm from '../components/ShippingForm';
 import DataTable from '../components/DataTable';
+import ShippedParts from '../components/ShippedParts';
+import PackingSlip from '../components/PackingSlipTemplate';
 
 import Header from '../elements/Header';
 import Loader from '../elements/Loader';
@@ -15,7 +18,6 @@ import View from '../elements/View';
 import DownChevron from '../assets/chevron-down.svg';
 import RightChevron from '../assets/chevron-right.svg';
 import Download from '../assets/download.svg';
-import ShippedParts from '../components/ShippedParts';
 
 const parseData = (shipments) => {
   if (shipments) {
@@ -40,9 +42,9 @@ const Shipping = () => {
         Cell: ({ row }) => (
           <span {...row.getToggleRowExpandedProps()}>
             {row.isExpanded ? (
-              <RightChevron className="mx-auto animate-rotate-90-cw w-6 h-6" />
+              <DownChevron className="mx-auto w-6 h-6" />
             ) : (
-              <DownChevron className="mx-auto animate-rotate-90-ccw w-6 h-6" />
+              <RightChevron className="mx-auto w-6 h-6" />
             )}
           </span>
         ),
@@ -63,13 +65,22 @@ const Shipping = () => {
         Header: 'Packing Slip',
         accessor: 'packing_slip',
         Cell: ({ row }) => (
-          <div
-            onClick={() => console.log(row.original)}
+          <PDFDownloadLink
             className="cursor-pointer flex space-x-4 justify-center items-center group"
+            document={<PackingSlip shipment={row.original} />}
+            fileName={`PS-${row.original.packing_slip}.pdf`}
           >
-            <p className="group-hover:text-green-500">{row.values.packing_slip}</p>
-            <Download className="h-6 w-6 group-hover:text-green-500" />
-          </div>
+            {({ loading }) =>
+              loading ? (
+                'Loading...'
+              ) : (
+                <>
+                  <p className="group-hover:text-green-500">{row.values.packing_slip}</p>
+                  <Download className="h-6 w-6 group-hover:text-green-500" />
+                </>
+              )
+            }
+          </PDFDownloadLink>
         ),
       },
       {
