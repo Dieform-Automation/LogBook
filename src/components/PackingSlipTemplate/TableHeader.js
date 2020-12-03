@@ -1,14 +1,12 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/display-name */
 import React from 'react';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-const borderColor = '#90e5fc';
+const borderColor = '#9CA3AF';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderBottomColor: '#bff0fd',
-    backgroundColor: '#bff0fd',
+    borderBottomColor: '#E5E7EB',
+    backgroundColor: '#E5E7EB',
     borderBottomWidth: 1,
     alignItems: 'center',
     height: 25,
@@ -43,8 +41,6 @@ const styles = StyleSheet.create({
   },
   bins: {
     width: '15%',
-    borderRightColor: borderColor,
-    borderRightWidth: 1,
     marginTop: '5px',
   },
 });

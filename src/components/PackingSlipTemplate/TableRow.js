@@ -1,14 +1,12 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/display-name */
-/* eslint-disable no-unused-vars */
-import React, { Fragment } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
-const borderColor = '#90e5fc';
+const borderColor = '#9CA3AF';
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    borderBottomColor: '#bff0fd',
+    borderBottomColor: '#E5E7EB',
     borderBottomWidth: 1,
     alignItems: 'center',
     height: 24,
@@ -49,17 +47,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const TableRow = ({ items }) => {
-  const rows = items.map((item, key) => (
-    <View style={styles.row} key={key}>
-      <Text style={styles.itemNo}>{key}</Text>
-      <Text style={styles.partNumber}>{item.part_number}</Text>
-      <Text style={styles.po}>{item.purchase_order.toString()}</Text>
-      <Text style={styles.qty}>{item.quantity.toString()}</Text>
-      <Text style={styles.bins}>{item.bins.toString()}</Text>
-    </View>
-  ));
-  return <Fragment>{rows}</Fragment>;
-};
+const TableRow = ({ item, number }) => (
+  <View style={styles.row}>
+    <Text style={styles.itemNo}>{number}</Text>
+    <Text style={styles.partNumber}>{item.part_number}</Text>
+    <Text style={styles.po}>{item.purchase_order}</Text>
+    <Text style={styles.qty}>{item.quantity}</Text>
+    <Text style={styles.bins}>{item.bins}</Text>
+  </View>
+);
 
+TableRow.propTypes = {
+  item: PropTypes.object.isRequired,
+  number: PropTypes.number.isRequired,
+};
 export default TableRow;

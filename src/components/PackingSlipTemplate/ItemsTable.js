@@ -1,12 +1,9 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/display-name */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet } from '@react-pdf/renderer';
+
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
-import TableBlankSpace from './TableBlankSpace';
-
-const tableRowsCount = 6;
 
 const styles = StyleSheet.create({
   tableContainer: {
@@ -14,16 +11,20 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     marginTop: 24,
     borderWidth: 1,
-    borderColor: '#bff0fd',
+    borderColor: '#E5E7EB',
   },
 });
 
 const ItemsTable = ({ shipment }) => (
   <View style={styles.tableContainer}>
     <TableHeader />
-    <TableRow items={shipment.shipped_parts} />
-    <TableBlankSpace rowsCount={tableRowsCount - shipment.shipped_parts.length} />
+    {shipment.shipped_parts.map((part, i) => (
+      <TableRow item={part} key={i} number={i + 1} />
+    ))}
   </View>
 );
 
+ItemsTable.propTypes = {
+  shipment: PropTypes.object.isRequired,
+};
 export default ItemsTable;
