@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     marginTop: 24,
-    borderWidth: 1,
+    borderRightWidth: 1,
+    borderLeftWidth: 1,
     borderColor: '#E5E7EB',
   },
 });

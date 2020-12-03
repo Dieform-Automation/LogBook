@@ -61,4 +61,5 @@ TableRow.propTypes = {
   item: PropTypes.object.isRequired,
   number: PropTypes.number.isRequired,
 };
+
 export default TableRow;
