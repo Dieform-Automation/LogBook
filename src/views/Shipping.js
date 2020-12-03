@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
+/* eslint-disable no-unused-vars */
 import React from 'react';
 
 import useShipments from '../hooks/useShipments';
@@ -14,8 +15,11 @@ import View from '../elements/View';
 
 import DownChevron from '../assets/chevron-down.svg';
 import RightChevron from '../assets/chevron-right.svg';
-import Download from '../assets/download.svg';
+// import Download from '../assets/download.svg';
 import ShippedParts from '../components/ShippedParts';
+import PackingSlip from '../components/packingSlip/PackingSlip';
+
+import { PDFDownloadLink, Document } from '@react-pdf/renderer';
 
 const parseData = (shipments) => {
   if (shipments) {
@@ -68,7 +72,20 @@ const Shipping = () => {
             className="cursor-pointer flex space-x-4 justify-center items-center group"
           >
             <p className="group-hover:text-green-500">{row.values.packing_slip}</p>
-            <Download className="h-6 w-6 group-hover:text-green-500" />
+            <PDFDownloadLink
+              fileName="packing-slip.pdf"
+              document={
+                <Document>
+                  <PackingSlip shipment={row.original} />
+                </Document>
+              }
+            >
+              {({ blob, url, loading, error }) =>
+                loading ? 'Loading document...' : 'Download now!'
+              }
+            </PDFDownloadLink>
+
+            {/* <Download className="h-6 w-6 group-hover:text-green-500" /> */}
           </div>
         ),
       },
