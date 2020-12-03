@@ -1,14 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
 import React from 'react';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 
 import useShipments from '../hooks/useShipments';
 
 import ShippingForm from '../components/ShippingForm';
 import DataTable from '../components/DataTable';
 import ShippedParts from '../components/ShippedParts';
-import PackingSlip from '../components/PackingSlipTemplate';
+import DownloadPackingSlip from '../components/DownloadPackingSlip';
 
 import Header from '../elements/Header';
 import Loader from '../elements/Loader';
@@ -17,7 +16,6 @@ import View from '../elements/View';
 
 import DownChevron from '../assets/chevron-down.svg';
 import RightChevron from '../assets/chevron-right.svg';
-import Download from '../assets/download.svg';
 
 const parseData = (shipments) => {
   if (shipments) {
@@ -64,24 +62,11 @@ const Shipping = () => {
       {
         Header: 'Packing Slip',
         accessor: 'packing_slip',
-        Cell: ({ row }) => (
-          <PDFDownloadLink
-            className="cursor-pointer flex space-x-4 justify-center items-center group"
-            document={<PackingSlip shipment={row.original} />}
-            fileName={`PS-${row.original.packing_slip}.pdf`}
-          >
-            {({ loading }) =>
-              loading ? (
-                'Loading...'
-              ) : (
-                <>
-                  <p className="group-hover:text-green-500">{row.values.packing_slip}</p>
-                  <Download className="h-6 w-6 group-hover:text-green-500" />
-                </>
-              )
-            }
-          </PDFDownloadLink>
-        ),
+      },
+      {
+        id: 'download',
+        Header: 'Download',
+        Cell: ({ row }) => <DownloadPackingSlip row={row} />,
       },
       {
         id: 'parts',

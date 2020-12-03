@@ -5,6 +5,16 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
+  node: {
+    module: 'empty',
+    dgram: 'empty',
+    dns: 'mock',
+    fs: 'empty',
+    http2: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty',
+  },
   entry: path.join(__dirname, 'src', 'index.js'),
   output: {
     path: path.resolve(__dirname, 'dist'),

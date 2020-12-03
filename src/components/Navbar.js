@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import logo from '../assets/logo.png';
 import { NavLink } from 'react-router-dom';
+
+import logo from '../assets/logo.png';
 import MenuIcon from '../assets/menu.svg';
 import CrossIcon from '../assets/cross.svg';
-import DropdownArrow from '../assets/dropdown-arrow.svg';
+import DownChevron from '../assets/chevron-down.svg';
 
 const Navbar = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -44,7 +45,7 @@ const Navbar = () => {
                     className="relative z-10 cursor-pointer flex items-center nav-link"
                   >
                     Manage Data
-                    <DropdownArrow className="-mr-1 ml-2 h-5 w-5" />
+                    <DownChevron className="-mr-1 ml-2 h-5 w-5" />
                   </a>
 
                   {/* 
