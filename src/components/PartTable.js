@@ -46,7 +46,6 @@ const PartTable = ({ customerId }) => {
         resetForm();
       })
       .catch((err) => {
-        console.log(err.errors);
         toast.error(err.errors[0]);
       });
   };

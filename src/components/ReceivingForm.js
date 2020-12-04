@@ -72,13 +72,14 @@ const ReceivingForm = () => {
       >
         {({ values }) => (
           <Form className="space-y-4">
-            <TextInput label="Date" name="date" type="date" />
+            <TextInput label="Date" name="date" type="date" data-testid="date" />
             <Dropdown label="Customer" name="customer_id" options={customerOptions} />
             <TextInput
               label="Customer Packing Slip"
               name="customer_packing_slip"
               type="text"
               placeholder="73648264"
+              data-testid="packing-slip"
             />
             {values.customer_id !== undefined ? (
               <PartTable customerId={values.customer_id} />
