@@ -14,7 +14,7 @@ const Modal = ({ isShowing, hide, title, children }) => {
             tabIndex={-1}
             role="dialog"
           >
-            <div className="relative bg-white max-w-4xl rounded p-4 center">
+            <div className="relative bg-white max-w-3xl rounded-md p-4 center">
               <div className="flex justify-between items-center px-4">
                 <h2 className="font-bold text-2xl tracking-tight">{title}</h2>
                 <button
