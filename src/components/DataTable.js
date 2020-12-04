@@ -153,7 +153,7 @@ const DataTable = ({ columns, data, renderRowSubComponent }) => {
                     </tr>
                     {row.isExpanded ? (
                       <tr>
-                        <td className="text-left" colSpan={visibleColumns.length}>
+                        <td colSpan={visibleColumns.length}>
                           {/*
                             Inside it, call our renderRowSubComponent function. In reality,
                             you could pass whatever you want as props to
