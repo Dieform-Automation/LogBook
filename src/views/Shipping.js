@@ -21,7 +21,7 @@ const parseData = (shipments) => {
   if (shipments) {
     return shipments.map((shipment) => ({
       ...shipment,
-      date: new Date(shipment.date).toLocaleDateString(),
+      date: new Date(String(shipment.date).concat('-0500')).toLocaleDateString(),
       packing_slip: String(shipment.id).padStart(6, '0'),
     }));
   } else {

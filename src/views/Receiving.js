@@ -15,12 +15,12 @@ const parseData = (recOrders) => {
     return recOrders.flatMap((received) => {
       const { customer, date, received_parts } = received;
       const data = received_parts.map((part) => ({
-        date: new Date(date).toLocaleDateString(),
+        ...received,
+        date: new Date(String(date).concat('-0500')).toLocaleDateString(),
         customer: customer,
         part_number: part.part_number,
         quantity: part.quantity,
         bins: part.bins,
-        data: received,
       }));
       return data;
     });

@@ -11,15 +11,15 @@ import Cog from '../assets/cog.svg';
 import Exclamation from '../assets/exclamation.svg';
 
 const ShipmentConfirmation = ({ shipment }) => {
-  shipment.packing_slip = String(shipment.id).padStart(6, '0');
-  shipment.date = new Date(shipment.date).toLocaleDateString();
+  const packing_slip = String(shipment.id).padStart(6, '0');
+  const date = new Date(String(shipment.date).concat('-0500')).toLocaleDateString();
 
   return (
     <div className="p-4 space-y-4 text-left">
       <div className="flex flex-wrap justify-between">
         <h1 className="form-label flex flex-col">
           Date
-          <span className="font-normal tracking-normal normal-case">{shipment.date}</span>
+          <span className="font-normal tracking-normal normal-case">{date}</span>
         </h1>
         <h1 className="form-label flex flex-col">
           Customer
@@ -35,16 +35,14 @@ const ShipmentConfirmation = ({ shipment }) => {
         </h1>
         <h1 className="form-label flex flex-col">
           Packing Slip No.
-          <span className="font-normal tracking-normal normal-case">
-            {shipment.packing_slip}
-          </span>
+          <span className="font-normal tracking-normal normal-case">{packing_slip}</span>
         </h1>
       </div>
       <ShippedParts parts={shipment.shipped_parts} />
       <div className="mt-2">
         <PDFDownloadLink
           document={<PackingSlip shipment={shipment} />}
-          fileName={`PS-${shipment.packing_slip}.pdf`}
+          fileName={`PS-${packing_slip}.pdf`}
         >
           {({ loading, error }) =>
             loading ? (
