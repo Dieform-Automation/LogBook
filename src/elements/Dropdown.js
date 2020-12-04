@@ -21,7 +21,6 @@ const Dropdown = ({ label, name, options, resetOnChange, inline }) => {
   }, [field]);
 
   const handleChange = (selectedOption, { action }) => {
-    console.log(selectedOption, action);
     switch (action) {
       case 'select-option':
         setSelectedOption(selectedOption);

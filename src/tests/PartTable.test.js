@@ -3,14 +3,21 @@ import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PartTable from '../components/PartTable';
+import { ToastContainer } from 'react-toastify';
 
 beforeEach(() => {
-  render(<PartTable customerId={1} />, { wrapper: MemoryRouter });
+  render(
+    <>
+      <PartTable customerId={1} />
+      <ToastContainer autoClose={4000} newestOnTop={true} limit={3} />
+    </>,
+    { wrapper: MemoryRouter }
+  );
 });
 
 describe('Form elements are rendered', () => {
   test('part number label', async () => {
-    const numberLabel = await screen.findByLabelText('Part Number');
+    const numberLabel = await screen.findByLabelText(/Part Number/);
     expect(numberLabel).toBeInTheDocument();
   });
 
@@ -20,7 +27,7 @@ describe('Form elements are rendered', () => {
   });
 
   test('quantity label', async () => {
-    const quantityLabel = await screen.findByLabelText('Quantity');
+    const quantityLabel = await screen.findByLabelText(/Quantity/);
     expect(quantityLabel).toBeInTheDocument();
   });
 
@@ -30,7 +37,7 @@ describe('Form elements are rendered', () => {
   });
 
   test('bins label', async () => {
-    const binsLabel = await screen.findByLabelText('Number of Bins');
+    const binsLabel = await screen.findByLabelText(/Number of Bins/);
     expect(binsLabel).toBeInTheDocument();
   });
 
@@ -58,7 +65,8 @@ describe('Form validation', () => {
   test('error when part is not selected', async () => {
     const addPartBtn = await screen.findByTestId('add-part-btn');
     userEvent.click(addPartBtn);
-    expect(screen.queryByText('Part number is required')).toBeInTheDocument();
+    const toast = await screen.findByRole('alert');
+    expect(toast).toBeInTheDocument();
   });
 
   test('error when quantity is not provided', async () => {
@@ -69,7 +77,8 @@ describe('Form validation', () => {
 
     const addPartBtn = await screen.findByTestId('add-part-btn');
     userEvent.click(addPartBtn);
-    expect(screen.queryByText('Quantity value must be a number')).toBeInTheDocument();
+    const toast = await screen.findByRole('alert');
+    expect(toast).toBeInTheDocument();
   });
 
   test('error when quantity is not a number', async () => {
@@ -82,7 +91,9 @@ describe('Form validation', () => {
 
     const addPartBtn = await screen.findByTestId('add-part-btn');
     userEvent.click(addPartBtn);
-    expect(screen.queryByText('Quantity value must be a number')).toBeInTheDocument();
+
+    const toast = await screen.findByRole('alert');
+    expect(toast).toBeInTheDocument();
   });
 
   test('error when bins is not provided', async () => {
@@ -95,7 +106,9 @@ describe('Form validation', () => {
 
     const addPartBtn = await screen.findByTestId('add-part-btn');
     userEvent.click(addPartBtn);
-    expect(screen.queryByText('Bins value must be a number')).toBeInTheDocument();
+
+    const toast = await screen.findByRole('alert');
+    expect(toast).toBeInTheDocument();
   });
 
   test('error when bins is not a number', async () => {
@@ -110,6 +123,8 @@ describe('Form validation', () => {
 
     const addPartBtn = await screen.findByTestId('add-part-btn');
     userEvent.click(addPartBtn);
-    expect(screen.queryByText('Bins value must be a number')).toBeInTheDocument();
+
+    const toast = await screen.findByRole('alert');
+    expect(toast).toBeInTheDocument();
   });
 });
