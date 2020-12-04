@@ -66,7 +66,7 @@ const Shipping = () => {
       {
         id: 'download',
         Header: 'Download',
-        Cell: ({ row }) => <DownloadPackingSlip row={row} />,
+        Cell: ({ row }) => <DownloadPackingSlip shipment={row.original} />,
       },
       {
         id: 'parts',

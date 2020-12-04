@@ -9,14 +9,14 @@ import File from '../assets/file.svg';
 import Cog from '../assets/cog.svg';
 import Exclamation from '../assets/exclamation.svg';
 
-const DownloadPackingSlip = ({ row }) => {
+const DownloadPackingSlip = ({ shipment }) => {
   const [show, setShow] = useState(false);
   return (
-    <div className="cursor-pointer flex space-x-4 justify-center items-center group">
+    <div className="cursor-pointer flex justify-center items-center">
       {show ? (
         <PDFDownloadLink
-          document={<PackingSlip shipment={row.original} />}
-          fileName={`PS-${row.original.packing_slip}.pdf`}
+          document={<PackingSlip shipment={shipment} />}
+          fileName={`PS-${shipment.packing_slip}.pdf`}
         >
           {({ loading, error }) =>
             loading ? (
@@ -51,7 +51,7 @@ const DownloadPackingSlip = ({ row }) => {
 };
 
 DownloadPackingSlip.propTypes = {
-  row: PropTypes.object.isRequired,
+  shipment: PropTypes.object.isRequired,
 };
 
 export default DownloadPackingSlip;
