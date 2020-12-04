@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
@@ -7,8 +7,11 @@ import useCustomers from '../hooks/useCustomers';
 import useMapToOptions from '../hooks/useMapToOptions';
 import usePartTable from '../hooks/usePartTable';
 import useCreateShipment from '../hooks/useCreateShipment';
+import useModal from '../hooks/useModal';
 
 import PartTable from './PartTable';
+import ShipmentConfirmation from './ShipmentConfirmation';
+import Modal from './Modal';
 
 import Loader from '../elements/Loader';
 import TextInput from '../elements/TextInput';
@@ -35,6 +38,8 @@ const shipmentSchema = Yup.object().shape({
 
 const ShippingForm = () => {
   const { partList, resetPartList } = usePartTable();
+  const { isShowing, toggle } = useModal();
+  const [shipment, setShipment] = useState({});
   const { data: customers, isLoading, isError } = useCustomers();
   const [createShipment] = useCreateShipment();
   const customerOptions = React.useMemo(() => useMapToOptions(customers, 'id', 'name'), [
@@ -51,7 +56,7 @@ const ShippingForm = () => {
         initialValues={{
           customer_id: undefined,
           date: '',
-          shipping_method: '',
+          shipping_method: undefined,
         }}
         onSubmit={(values, actions) => {
           values.shipped_parts = partList;
@@ -60,11 +65,12 @@ const ShippingForm = () => {
             .then((payload) => {
               // Validation Successful
               createShipment(payload, {
-                onSuccess: () => {
+                onSuccess: (data) => {
                   // API Request Successful
                   actions.resetForm();
                   resetPartList();
-                  toast.success('Shipment created');
+                  setShipment(data);
+                  toggle();
                 },
                 onError: (err) => {
                   // API Request Failed
@@ -72,7 +78,6 @@ const ShippingForm = () => {
                   toast.error('Failed to create shipment');
                 },
               });
-              console.log(payload);
             })
             .catch((err) => {
               // Validation Failed
@@ -100,6 +105,9 @@ const ShippingForm = () => {
           </Form>
         )}
       </Formik>
+      <Modal isShowing={isShowing} hide={toggle} title="Shipment Created">
+        <ShipmentConfirmation shipment={shipment} />
+      </Modal>
     </div>
   );
 };
