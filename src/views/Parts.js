@@ -14,32 +14,12 @@ import Loader from '../elements/Loader';
 import Error from '../elements/Error';
 import View from '../elements/View';
 
-const parseData = (parts) => {
-  if (parts) {
-    return parts.map((p) => {
-      return {
-        data: p,
-        customer: p.customer,
-        name: p.name,
-        number: p.number,
-        purchase_order: p.purchase_order,
-      };
-    });
-  } else {
-    return [];
-  }
-};
-
 const Parts = () => {
   const { data: parts, isLoading, isError } = useParts();
   const [createPart] = useCreatePart();
 
   const columns = React.useMemo(
     () => [
-      {
-        Header: 'Customer',
-        accessor: 'customer',
-      },
       {
         Header: 'Part Name',
         accessor: 'name',
@@ -52,10 +32,14 @@ const Parts = () => {
         Header: 'Purchase Order',
         accessor: 'purchase_order',
       },
+      {
+        Header: 'Customer',
+        accessor: 'customer',
+      },
     ],
     []
   );
-  const data = React.useMemo(() => parseData(parts), [parts]);
+  const data = React.useMemo(() => (parts ? parts : []), [parts]);
   const { isShowing, toggle } = useModal();
 
   const handleSubmit = (payload) => {
