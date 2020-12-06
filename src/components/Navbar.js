@@ -4,11 +4,9 @@ import { NavLink } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import MenuIcon from '../assets/menu.svg';
 import CrossIcon from '../assets/cross.svg';
-import DownChevron from '../assets/chevron-down.svg';
 
 const Navbar = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-  const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
 
   return (
     <nav className="sticky top-0 bg-gray-800 z-10">
@@ -23,6 +21,16 @@ const Navbar = () => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 <NavLink
+                  to="/customers"
+                  activeClassName="active-link"
+                  className="nav-link"
+                >
+                  Customers
+                </NavLink>
+                <NavLink to="/parts" activeClassName="active-link" className="nav-link">
+                  Parts
+                </NavLink>
+                <NavLink
                   to="/receiving"
                   activeClassName="active-link"
                   className="nav-link"
@@ -36,58 +44,6 @@ const Navbar = () => {
                 >
                   Shipping
                 </NavLink>
-
-                {/* Dropdown Button */}
-                <div className="relative">
-                  <a
-                    id="dropdown-button"
-                    onClick={() => setDropdownIsOpen(!dropdownIsOpen)}
-                    className="relative z-10 cursor-pointer flex items-center nav-link"
-                  >
-                    Manage Data
-                    <DownChevron className="-mr-1 ml-2 h-5 w-5" />
-                  </a>
-
-                  {/* 
-                      Overlay Button
-                      This is a hidden button that appears when the dropdown menu is open and covers the whole screen.
-                      It has no visual styling, it is responsible for closing the menu if the user clicks anywhere on the screen 
-                  */}
-                  <button
-                    id="overlay-button"
-                    className={`${
-                      dropdownIsOpen ? 'block' : 'hidden'
-                    } fixed inset-0 h-full w-full cursor-default`}
-                    onClick={() => setDropdownIsOpen(false)}
-                  />
-
-                  {/* Dropdown Menu */}
-                  <div
-                    id="dropdown"
-                    onClick={() => setDropdownIsOpen(false)}
-                    className={`${
-                      dropdownIsOpen ? 'block' : 'hidden'
-                    }  absolute left-0 mt-2 w-48 rounded-md shadow-lg z-10`}
-                  >
-                    <div className="py-1 rounded-md bg-gray-800 shadow-xs">
-                      <NavLink
-                        to="/customers"
-                        activeClassName="active-link"
-                        className="nav-link block text-sm"
-                      >
-                        Customers
-                      </NavLink>
-
-                      <NavLink
-                        to="/parts"
-                        activeClassName="active-link"
-                        className="nav-link block text-sm"
-                      >
-                        Parts
-                      </NavLink>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -117,6 +73,17 @@ const Navbar = () => {
       >
         <div className="px-2 pb-3 space-y-1">
           <NavLink
+            to="/customers"
+            activeClassName="active-link"
+            className="nav-link block"
+          >
+            Customers
+          </NavLink>
+
+          <NavLink to="/parts" activeClassName="active-link" className="nav-link block">
+            Parts
+          </NavLink>
+          <NavLink
             to="/receiving"
             activeClassName="active-link"
             className="nav-link block"
@@ -130,32 +97,6 @@ const Navbar = () => {
             className="nav-link block"
           >
             Shipping
-          </NavLink>
-
-          <h1 className="px-3 pt-2 text-sm uppercase font-bold text-gray-500">
-            Manage Data
-          </h1>
-
-          <NavLink
-            to="/customers"
-            activeClassName="active-link"
-            className="nav-link block text-sm py-1"
-          >
-            Customers
-          </NavLink>
-          <NavLink
-            to="/parts"
-            activeClassName="active-link"
-            className="nav-link block text-sm py-1"
-          >
-            Parts
-          </NavLink>
-          <NavLink
-            to="/purchase-orders"
-            activeClassName="active-link"
-            className="nav-link block text-sm py-1"
-          >
-            Purchase Orders
           </NavLink>
         </div>
       </div>
