@@ -12,7 +12,7 @@ import Exclamation from '../assets/exclamation.svg';
 const DownloadPackingSlip = ({ shipment }) => {
   const [show, setShow] = useState(false);
   return (
-    <div className="cursor-pointer flex justify-center items-center">
+    <div className="cursor-pointer flex items-center">
       {show ? (
         <PDFDownloadLink
           document={<PackingSlip shipment={shipment} />}

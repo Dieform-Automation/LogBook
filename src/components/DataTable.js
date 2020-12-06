@@ -78,7 +78,7 @@ const DataTable = ({ columns, data, renderRowSubComponent, sortBy = [] }) => {
       <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
         {/* Apply the table props */}
         <table
-          className="table-auto text-center min-w-full leading-normal"
+          className="table-auto text-left min-w-full leading-normal"
           {...getTableProps()}
         >
           <thead>
@@ -92,7 +92,7 @@ const DataTable = ({ columns, data, renderRowSubComponent, sortBy = [] }) => {
                     headerGroup.headers.map((column, key) => (
                       // Apply the header cell props
                       <th
-                        className="px-5 py-3 border-b-2 border-gray-200 bg-gray-900 text-xs font-semibold text-gray-100 uppercase tracking-wider"
+                        className="px-4 py-3 border-b-2 border-gray-200 bg-gray-900 text-xs font-semibold text-gray-100 uppercase tracking-wider"
                         key={key}
                         // Add the sorting props to control sorting
                         {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -138,7 +138,7 @@ const DataTable = ({ columns, data, renderRowSubComponent, sortBy = [] }) => {
                           // Apply the cell props
                           return (
                             <td
-                              className="px-5 py-5 border-b border-gray-200 bg-white text-sm"
+                              className="px-4 py-4 border-b border-gray-200 bg-white text-sm"
                               key={key}
                               {...cell.getCellProps()}
                             >
