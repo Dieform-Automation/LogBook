@@ -65,7 +65,7 @@ const CustomerForm = ({ onSubmit }) => {
       }}
     >
       <Form className="p-4 space-y-4">
-        <TextInput label="Company Name" name="name" type="text" placeholder="ACME Inc." />
+        <TextInput label="Company" name="name" type="text" placeholder="ACME Inc." />
         <TextInput
           label="Point of Contact"
           name="point_of_contact"

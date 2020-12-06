@@ -21,7 +21,7 @@ const Customers = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
+        Header: 'Company',
         accessor: 'name',
       },
       {
