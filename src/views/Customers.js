@@ -14,23 +14,6 @@ import Loader from '../elements/Loader';
 import Error from '../elements/Error';
 import View from '../elements/View';
 
-const parseData = (customers) => {
-  if (customers) {
-    return customers.map((c) => {
-      return {
-        ...c,
-        name: c.name,
-        contact: c.point_of_contact,
-        phone: c.phone,
-        email: c.email,
-        address: `${c.street}, ${c.city} ${c.province}`,
-      };
-    });
-  } else {
-    return [];
-  }
-};
-
 const Customers = () => {
   const { data: customers, isLoading, isError } = useCustomers();
   const [createCustomer] = useCreateCustomer();
@@ -43,7 +26,7 @@ const Customers = () => {
       },
       {
         Header: 'Contact',
-        accessor: 'contact',
+        accessor: 'point_of_contact',
       },
       {
         Header: 'Phone',
@@ -55,12 +38,12 @@ const Customers = () => {
       },
       {
         Header: 'Address',
-        accessor: 'address',
+        accessor: (c) => `${c.street}, ${c.city} ${c.province}`,
       },
     ],
     []
   );
-  const data = React.useMemo(() => parseData(customers), [customers]);
+  const data = React.useMemo(() => (customers ? customers : []), [customers]);
 
   const { isShowing, toggle } = useModal();
 
