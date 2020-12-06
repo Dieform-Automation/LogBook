@@ -17,17 +17,8 @@ import View from '../elements/View';
 import DownChevron from '../assets/chevron-down.svg';
 import RightChevron from '../assets/chevron-right.svg';
 
-const parseData = (shipments) => {
-  if (shipments) {
-    return shipments.map((shipment) => ({
-      ...shipment,
-      date: new Date(String(shipment.date).concat('-0500')).toLocaleDateString(),
-      packing_slip: String(shipment.id).padStart(6, '0'),
-    }));
-  } else {
-    return [];
-  }
-};
+const getDate = (date) => new Date(String(date).concat('-0500')).toLocaleDateString();
+const getPackingSlip = (id) => String(id).padStart(6, '0');
 
 const Shipping = () => {
   const { data: shipments, isLoading, isError } = useShipments();
@@ -50,7 +41,7 @@ const Shipping = () => {
       {
         id: 'date',
         Header: 'Date',
-        accessor: 'date',
+        accessor: (shipment) => getDate(shipment.date),
       },
       {
         id: 'customer',
@@ -65,12 +56,16 @@ const Shipping = () => {
       {
         id: 'packing_slip',
         Header: 'Packing Slip',
-        accessor: 'packing_slip',
+        accessor: (shipment) => getPackingSlip(shipment.id),
       },
       {
         id: 'download',
         Header: 'Download',
-        Cell: ({ row }) => <DownloadPackingSlip shipment={row.original} />,
+        accessor: (shipment) => {
+          const date = getDate(shipment.date);
+          const packing_slip = getPackingSlip(shipment.id);
+          return <DownloadPackingSlip shipment={{ ...shipment, date, packing_slip }} />;
+        },
       },
       {
         id: 'parts',
@@ -92,7 +87,7 @@ const Shipping = () => {
     );
   }, []);
 
-  const data = React.useMemo(() => parseData(shipments), [shipments]);
+  const data = React.useMemo(() => (shipments ? shipments : []), [shipments]);
   const sortBy = React.useMemo(() => [{ id: 'date', desc: true }]);
 
   return isLoading ? (
