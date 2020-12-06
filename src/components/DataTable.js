@@ -41,7 +41,7 @@ GlobalFilter.propTypes = {
   setGlobalFilter: PropTypes.func,
 };
 
-const DataTable = ({ columns, data, renderRowSubComponent, sortBy }) => {
+const DataTable = ({ columns, data, renderRowSubComponent, sortBy = [] }) => {
   const tableInstance = useTable(
     { columns, data, initialState: { pageIndex: 0, pageSize: 10, sortBy: sortBy } },
     useGlobalFilter,
