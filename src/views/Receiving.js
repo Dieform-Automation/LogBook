@@ -35,22 +35,27 @@ const Receiving = () => {
   const columns = React.useMemo(
     () => [
       {
+        id: 'date',
         Header: 'Date',
         accessor: 'date',
       },
       {
+        id: 'customer',
         Header: 'Customer',
         accessor: 'customer',
       },
       {
+        id: 'part_number',
         Header: 'Part Number',
         accessor: 'part_number',
       },
       {
+        id: 'quantity',
         Header: 'Quantity',
         accessor: 'quantity',
       },
       {
+        id: 'bins',
         Header: 'Bins',
         accessor: 'bins',
       },
@@ -59,6 +64,7 @@ const Receiving = () => {
   );
 
   const data = React.useMemo(() => parseData(recOrders), [recOrders]);
+  const sortBy = React.useMemo(() => [{ id: 'date', desc: true }]);
 
   return isLoading ? (
     <Loader />
@@ -69,7 +75,7 @@ const Receiving = () => {
       <Header title="Receiving" />
       <ReceivingForm />
       <div className="py-4">
-        <DataTable columns={columns} data={data} />
+        <DataTable columns={columns} data={data} sortBy={sortBy} />
       </div>
     </View>
   );

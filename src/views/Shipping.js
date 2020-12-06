@@ -48,18 +48,22 @@ const Shipping = () => {
         ),
       },
       {
+        id: 'date',
         Header: 'Date',
         accessor: 'date',
       },
       {
+        id: 'customer',
         Header: 'Customer',
         accessor: 'customer',
       },
       {
+        id: 'shipping_method',
         Header: 'Shipping Method',
         accessor: 'shipping_method',
       },
       {
+        id: 'packing_slip',
         Header: 'Packing Slip',
         accessor: 'packing_slip',
       },
@@ -89,6 +93,7 @@ const Shipping = () => {
   }, []);
 
   const data = React.useMemo(() => parseData(shipments), [shipments]);
+  const sortBy = React.useMemo(() => [{ id: 'date', desc: true }]);
 
   return isLoading ? (
     <Loader />
@@ -103,6 +108,7 @@ const Shipping = () => {
           columns={columns}
           data={data}
           renderRowSubComponent={renderRowSubComponent}
+          sortBy={sortBy}
         />
       </div>
     </View>
