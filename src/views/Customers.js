@@ -28,22 +28,27 @@ const Customers = () => {
   const columns = React.useMemo(
     () => [
       {
+        id: 'company',
         Header: 'Company',
         accessor: 'name',
       },
       {
+        id: 'point_of_contact',
         Header: 'Contact',
         accessor: 'point_of_contact',
       },
       {
+        id: 'phone',
         Header: 'Phone',
         accessor: 'phone',
       },
       {
+        id: 'email',
         Header: 'Email',
         accessor: 'email',
       },
       {
+        id: 'address',
         Header: 'Address',
         accessor: (c) => `${c.street}, ${c.city} ${c.province}`,
       },
@@ -67,6 +72,7 @@ const Customers = () => {
     []
   );
   const data = React.useMemo(() => (customers ? customers : []), [customers]);
+  const sortBy = React.useMemo(() => [{ id: 'company' }]);
 
   const { isShowing: isShowingAdd, toggle: toggleAdd } = useModal();
   const { isShowing: isShowingEdit, toggle: toggleEdit } = useModal();
@@ -109,13 +115,13 @@ const Customers = () => {
           Add Customer
         </button>
       </div>
+      <DataTable columns={columns} data={data} sortBy={sortBy} />
       <Modal isShowing={isShowingAdd} hide={toggleAdd} title="Add Customer">
         <CustomerForm onSubmit={handleSubmitAdd} />
       </Modal>
       <Modal isShowing={isShowingEdit} hide={toggleEdit} title="Edit Customer">
         <CustomerForm onSubmit={handleSubmitEdit} customer={editCustomer} />
       </Modal>
-      <DataTable columns={columns} data={data} />
     </View>
   );
 };
