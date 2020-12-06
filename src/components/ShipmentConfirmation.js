@@ -41,7 +41,7 @@ const ShipmentConfirmation = ({ shipment }) => {
       <ShippedParts parts={shipment.shipped_parts} />
       <div className="mt-2">
         <PDFDownloadLink
-          document={<PackingSlip shipment={shipment} />}
+          document={<PackingSlip shipment={{ ...shipment, packing_slip, date }} />}
           fileName={`PS-${packing_slip}.pdf`}
         >
           {({ loading, error }) =>
