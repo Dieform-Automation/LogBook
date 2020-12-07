@@ -18,7 +18,7 @@ module.exports = {
   entry: path.join(__dirname, 'src', 'index.js'),
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[contenthash].js',
+    filename: '[name].[contenthash:8].js',
   },
   optimization: {
     runtimeChunk: 'single',
@@ -64,10 +64,12 @@ module.exports = {
     new webpack.ProgressPlugin(),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
+      filename: '[name].[contenthash:8].css',
     }),
     new HtmlWebPackPlugin({
+      title: 'LogBook',
       template: './public/index.html',
+      favicon: './public/favicon.ico',
     }),
     new webpack.DefinePlugin({
       'process.env.API_URL': JSON.stringify(process.env.API_URL),

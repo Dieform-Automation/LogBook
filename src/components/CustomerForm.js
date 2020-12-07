@@ -36,20 +36,24 @@ const customerSchema = Yup.object().shape({
   name: Yup.string().required('Customer Name is required'),
 });
 
-const CustomerForm = ({ onSubmit }) => {
+const CustomerForm = ({ onSubmit, customer }) => {
   return (
     <Formik
-      initialValues={{
-        name: '',
-        point_of_contact: '',
-        phone: '',
-        email: '',
-        street: '',
-        city: '',
-        country: '',
-        province: '',
-        postal_code: '',
-      }}
+      initialValues={
+        customer
+          ? customer
+          : {
+              name: '',
+              point_of_contact: '',
+              phone: '',
+              email: '',
+              street: '',
+              city: '',
+              country: '',
+              province: '',
+              postal_code: '',
+            }
+      }
       onSubmit={(values, actions) => {
         customerSchema
           .validate(values)
@@ -65,7 +69,7 @@ const CustomerForm = ({ onSubmit }) => {
       }}
     >
       <Form className="p-4 space-y-4">
-        <TextInput label="Company Name" name="name" type="text" placeholder="ACME Inc." />
+        <TextInput label="Company" name="name" type="text" placeholder="ACME Inc." />
         <TextInput
           label="Point of Contact"
           name="point_of_contact"
@@ -77,7 +81,7 @@ const CustomerForm = ({ onSubmit }) => {
             label="Phone"
             name="phone"
             type="text"
-            placeholder="2865489937"
+            placeholder="(613) 897 0093"
             inline
           />
           <TextInput
@@ -131,6 +135,7 @@ const CustomerForm = ({ onSubmit }) => {
 
 CustomerForm.propTypes = {
   onSubmit: Proptypes.func,
+  customer: Proptypes.object,
 };
 
 export default CustomerForm;

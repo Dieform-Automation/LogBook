@@ -1,8 +1,11 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/display-name */
 import React from 'react';
 import { toast } from 'react-toastify';
 
 import useModal from '../hooks/useModal';
 import useCreateCustomer from '../hooks/useCreateCustomer';
+import useUpdateCustomer from '../hooks/useUpdateCustomer';
 import useCustomers from '../hooks/useCustomers';
 
 import CustomerForm from '../components/CustomerForm';
@@ -14,65 +17,89 @@ import Loader from '../elements/Loader';
 import Error from '../elements/Error';
 import View from '../elements/View';
 
-const parseData = (customers) => {
-  if (customers) {
-    return customers.map((c) => {
-      return {
-        ...c,
-        name: c.name,
-        contact: c.point_of_contact,
-        phone: c.phone,
-        email: c.email,
-        address: `${c.street}, ${c.city} ${c.province}`,
-      };
-    });
-  } else {
-    return [];
-  }
-};
+import Edit from '../assets/edit.svg';
 
 const Customers = () => {
   const { data: customers, isLoading, isError } = useCustomers();
   const [createCustomer] = useCreateCustomer();
+  const [updateCustomer] = useUpdateCustomer();
+  const [editCustomer, setEditCustomer] = React.useState(undefined);
 
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Name',
+        id: 'company',
+        Header: 'Company',
         accessor: 'name',
       },
       {
+        id: 'point_of_contact',
         Header: 'Contact',
-        accessor: 'contact',
+        accessor: 'point_of_contact',
       },
       {
+        id: 'phone',
         Header: 'Phone',
         accessor: 'phone',
       },
       {
+        id: 'email',
         Header: 'Email',
         accessor: 'email',
       },
       {
+        id: 'address',
         Header: 'Address',
-        accessor: 'address',
+        accessor: (c) => `${c.street}, ${c.city} ${c.province}`,
+      },
+      {
+        id: 'edit',
+        Header: 'Edit',
+        Cell: ({ row }) => {
+          const customer = row.original;
+          const onClick = () => {
+            setEditCustomer(customer);
+            toggleEdit();
+          };
+          return (
+            <Edit
+              onClick={onClick}
+              className="cursor-pointer text-gray-500 hover:text-blue-500 w-6 h-6"
+            />
+          );
+        },
       },
     ],
     []
   );
-  const data = React.useMemo(() => parseData(customers), [customers]);
+  const data = React.useMemo(() => (customers ? customers : []), [customers]);
+  const sortBy = React.useMemo(() => [{ id: 'company' }]);
 
-  const { isShowing, toggle } = useModal();
+  const { isShowing: isShowingAdd, toggle: toggleAdd } = useModal();
+  const { isShowing: isShowingEdit, toggle: toggleEdit } = useModal();
 
-  const handleSubmit = (payload) => {
+  const handleSubmitAdd = (payload) => {
     createCustomer(payload, {
       onSuccess: () => {
-        toggle();
-        toast.success('Customer created');
+        toggleAdd();
+        toast.success('Customer Created');
       },
       onError: (err) => {
         console.log(err);
         toast.error('Failed to create customer');
+      },
+    });
+  };
+
+  const handleSubmitEdit = (payload) => {
+    updateCustomer(payload, {
+      onSuccess: () => {
+        toggleEdit();
+        toast.success('Customer Updated');
+      },
+      onError: (err) => {
+        console.log(err);
+        toast.error('Failed to update customer');
       },
     });
   };
@@ -85,14 +112,17 @@ const Customers = () => {
     <View>
       <div className="flex justify-between items-center">
         <Header title="Customers" />
-        <button className="btn btn-blue" onClick={toggle}>
+        <button className="btn btn-blue" onClick={toggleAdd}>
           Add Customer
         </button>
       </div>
-      <Modal isShowing={isShowing} hide={toggle} title="Add Customer">
-        <CustomerForm onSubmit={handleSubmit} />
+      <DataTable columns={columns} data={data} sortBy={sortBy} />
+      <Modal isShowing={isShowingAdd} hide={toggleAdd} title="Add Customer">
+        <CustomerForm onSubmit={handleSubmitAdd} />
       </Modal>
-      <DataTable columns={columns} data={data} />
+      <Modal isShowing={isShowingEdit} hide={toggleEdit} title="Edit Customer">
+        <CustomerForm onSubmit={handleSubmitEdit} customer={editCustomer} />
+      </Modal>
     </View>
   );
 };

@@ -10,6 +10,7 @@ const CreatableDropdown = ({
   createOption,
   isDisabled,
   resetOnChange,
+  noOptionsMessage,
 }) => {
   const [selectedOption, setSelectedOption] = React.useState();
   const [isLoading, setIsLoading] = React.useState(false);
@@ -69,6 +70,7 @@ const CreatableDropdown = ({
         onChange={handleChange}
         isClearable={true}
         aria-labelledby={field.name}
+        noOptionsMessage={() => noOptionsMessage}
       />
     </>
   );
@@ -87,6 +89,7 @@ CreatableDropdown.propTypes = {
   createOption: PropTypes.func.isRequired,
   isDisabled: PropTypes.bool,
   resetOnChange: PropTypes.any,
+  noOptionsMessage: PropTypes.string,
 };
 
 export default CreatableDropdown;

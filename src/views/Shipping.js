@@ -17,17 +17,8 @@ import View from '../elements/View';
 import DownChevron from '../assets/chevron-down.svg';
 import RightChevron from '../assets/chevron-right.svg';
 
-const parseData = (shipments) => {
-  if (shipments) {
-    return shipments.map((shipment) => ({
-      ...shipment,
-      date: new Date(shipment.date).toLocaleDateString(),
-      packing_slip: String(shipment.id).padStart(6, '0'),
-    }));
-  } else {
-    return [];
-  }
-};
+const getDate = (date) => new Date(String(date).concat('-0500')).toLocaleDateString();
+const getPackingSlip = (id) => String(id).padStart(6, '0');
 
 const Shipping = () => {
   const { data: shipments, isLoading, isError } = useShipments();
@@ -48,33 +39,40 @@ const Shipping = () => {
         ),
       },
       {
+        id: 'date',
         Header: 'Date',
-        accessor: 'date',
+        accessor: (shipment) => getDate(shipment.date),
       },
       {
+        id: 'customer',
         Header: 'Customer',
         accessor: 'customer',
       },
       {
+        id: 'shipping_method',
         Header: 'Shipping Method',
         accessor: 'shipping_method',
       },
       {
+        id: 'packing_slip',
         Header: 'Packing Slip',
-        accessor: 'packing_slip',
+        accessor: (shipment) => getPackingSlip(shipment.id),
       },
       {
         id: 'download',
         Header: 'Download',
-        Cell: ({ row }) => <DownloadPackingSlip shipment={row.original} />,
-      },
-      {
-        id: 'parts',
+        disableSortBy: true,
+        // Add list of shipped parts as accessor in order to be searched by global filter
         accessor: (row) => {
           const { shipped_parts } = row;
           return shipped_parts.map((p) => p.part_number).join(' ');
         },
-        Cell: () => null,
+        Cell: ({ row }) => {
+          const shipment = row.original;
+          const date = getDate(shipment.date);
+          const packing_slip = getPackingSlip(shipment.id);
+          return <DownloadPackingSlip shipment={{ ...shipment, date, packing_slip }} />;
+        },
       },
     ],
     []
@@ -88,7 +86,8 @@ const Shipping = () => {
     );
   }, []);
 
-  const data = React.useMemo(() => parseData(shipments), [shipments]);
+  const data = React.useMemo(() => (shipments ? shipments : []), [shipments]);
+  const sortBy = React.useMemo(() => [{ id: 'date', desc: true }]);
 
   return isLoading ? (
     <Loader />
@@ -103,6 +102,7 @@ const Shipping = () => {
           columns={columns}
           data={data}
           renderRowSubComponent={renderRowSubComponent}
+          sortBy={sortBy}
         />
       </div>
     </View>
