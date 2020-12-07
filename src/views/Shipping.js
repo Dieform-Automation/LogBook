@@ -61,19 +61,18 @@ const Shipping = () => {
       {
         id: 'download',
         Header: 'Download',
-        accessor: (shipment) => {
-          const date = getDate(shipment.date);
-          const packing_slip = getPackingSlip(shipment.id);
-          return <DownloadPackingSlip shipment={{ ...shipment, date, packing_slip }} />;
-        },
-      },
-      {
-        id: 'parts',
+        disableSortBy: true,
+        // Add list of shipped parts as accessor in order to be searched by global filter
         accessor: (row) => {
           const { shipped_parts } = row;
           return shipped_parts.map((p) => p.part_number).join(' ');
         },
-        Cell: () => null,
+        Cell: ({ row }) => {
+          const shipment = row.original;
+          const date = getDate(shipment.date);
+          const packing_slip = getPackingSlip(shipment.id);
+          return <DownloadPackingSlip shipment={{ ...shipment, date, packing_slip }} />;
+        },
       },
     ],
     []
