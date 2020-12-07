@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
-import React, { useState } from 'react';
+import React from 'react';
 import { toast } from 'react-toastify';
 
 import useModal from '../hooks/useModal';
@@ -23,7 +23,7 @@ const Customers = () => {
   const { data: customers, isLoading, isError } = useCustomers();
   const [createCustomer] = useCreateCustomer();
   const [updateCustomer] = useUpdateCustomer();
-  const [editCustomer, setEditCustomer] = useState(undefined);
+  const [editCustomer, setEditCustomer] = React.useState(undefined);
 
   const columns = React.useMemo(
     () => [
