@@ -73,7 +73,6 @@ const Customers = () => {
     []
   );
   const data = React.useMemo(() => (customers ? customers : []), [customers]);
-  const sortBy = React.useMemo(() => [{ id: 'company' }]);
 
   const { isShowing: isShowingAdd, toggle: toggleAdd } = useModal();
   const { isShowing: isShowingEdit, toggle: toggleEdit } = useModal();
@@ -116,7 +115,7 @@ const Customers = () => {
           Add Customer
         </button>
       </div>
-      <DataTable columns={columns} data={data} sortBy={sortBy} />
+      <DataTable columns={columns} data={data} />
       <Modal isShowing={isShowingAdd} hide={toggleAdd} title="Add Customer">
         <CustomerForm onSubmit={handleSubmitAdd} />
       </Modal>

@@ -71,7 +71,6 @@ const Parts = () => {
   const data = React.useMemo(() => (parts ? parts : []), [parts]);
   const { isShowing: isShowingAdd, toggle: toggleAdd } = useModal();
   const { isShowing: isShowingEdit, toggle: toggleEdit } = useModal();
-  const sortBy = React.useMemo(() => [{ id: 'name' }]);
 
   const handleSubmitAdd = (payload) => {
     createPart(payload, {
@@ -112,7 +111,7 @@ const Parts = () => {
           Add Part
         </button>
       </div>
-      <DataTable columns={columns} data={data} sortBy={sortBy} />
+      <DataTable columns={columns} data={data} />
       <Modal isShowing={isShowingAdd} hide={toggleAdd} title="Add Part">
         <PartForm onSubmit={handleSubmitAdd} />
       </Modal>

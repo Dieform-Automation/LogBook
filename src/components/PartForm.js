@@ -68,6 +68,7 @@ const PartForm = ({ onSubmit }) => {
             isDisabled={values.customer_id === undefined}
             label="Purchase Order"
             name="purchase_order_id"
+            noOptionsMessage="Type to create Purchase Order"
             options={purchaseOrderOptions.filter((option) => {
               return option.data.customer_id === values.customer_id;
             })}

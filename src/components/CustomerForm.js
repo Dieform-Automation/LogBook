@@ -81,7 +81,7 @@ const CustomerForm = ({ onSubmit, customer }) => {
             label="Phone"
             name="phone"
             type="text"
-            placeholder="(613) 897 0093"
+            placeholder="613-897-0093"
             inline
           />
           <TextInput
