@@ -120,6 +120,6 @@ const PartForm = ({ onSubmit }) => {
 };
 
 PartForm.propTypes = {
-  onSubmit: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
 };
 export default PartForm;
