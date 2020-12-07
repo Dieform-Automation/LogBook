@@ -54,6 +54,7 @@ const Customers = () => {
       },
       {
         id: 'edit',
+        Header: 'Edit',
         Cell: ({ row }) => {
           const customer = row.original;
           const onClick = () => {
@@ -63,7 +64,7 @@ const Customers = () => {
           return (
             <Edit
               onClick={onClick}
-              className="cursor-pointer text-blue-500 mx-auto w-6 h-6"
+              className="cursor-pointer text-gray-500 hover:text-blue-500 w-6 h-6"
             />
           );
         },
